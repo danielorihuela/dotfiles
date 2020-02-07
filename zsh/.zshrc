@@ -113,6 +113,8 @@ zstyle ':vcs_info:*' enable git svn
 theme_precmd () {
     if [[ -n $(git ls-files -d --exclude-standard 2> /dev/null) ]] {
         zstyle ':vcs_info:*' formats ' [%B%F{yellow}%b%B%F{green}]'
+    } elif [[ -n $(git ls-files -m --exclude-standard 2> /dev/null) ]] {
+        zstyle ':vcs_info:*' formats ' [%B%F{yellow}%b%B%F{green}]'
     } elif [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
         zstyle ':vcs_info:*' formats ' [%B%F{green}%b%B%F{green}]'
     } else { 
