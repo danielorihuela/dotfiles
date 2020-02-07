@@ -5,10 +5,10 @@ DIR="${HOME}/dotfiles"
 ZSH_FOLDER="zsh"
 ZSHRC=".zshrc"
 
-apt install zsh -y
+sudo apt install zsh -y
 chsh -s $(which zsh)
-apt install wget -y
-apt install git -y
+sudo apt install wget -y
+sudo apt install git -y
 sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 mv .oh-my-zsh ZSH_FOLDER
 
