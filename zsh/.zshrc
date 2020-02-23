@@ -9,6 +9,10 @@ ZSHCONFIG="$CONFIG/zsh"
 export ZSH="$ZSHCONFIG/.oh-my-zsh"
 export VISUAL=vim
 export EDITOR="$VISUAL"
+# Needed for some python packages
+export PATH=$PATH:"$HOME/.local/bin"
+# Needed for aws cli 2
+export PATH="/usr/local":$PATH
 
 HISTFILE="$ZSHCONFIG/.zsh_history"
 
@@ -106,30 +110,13 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-autoload -Uz vcs_info
+PROMPT="%(?:%{$fg_bold[yellow]%}➜ :%{$fg_bold[red]%}➜ )"
+PROMPT+=' %{$fg[yellow]%}%c%{$reset_color%} $(git_prompt_info)'
 
-zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{11}%r'
-zstyle ':vcs_info:*' enable git svn
-theme_precmd () {
-    if [[ -n $(git ls-files -d --exclude-standard 2> /dev/null) ]] {
-        zstyle ':vcs_info:*' formats ' [%B%F{yellow}%b%B%F{green}]'
-    } elif [[ -n $(git ls-files -m --exclude-standard 2> /dev/null) ]] {
-        zstyle ':vcs_info:*' formats ' [%B%F{yellow}%b%B%F{green}]'
-    } elif [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
-        zstyle ':vcs_info:*' formats ' [%B%F{green}%b%B%F{green}]'
-    } else { 
-        zstyle ':vcs_info:*' formats ' [%B%F{red}%b%F{green}]'
-    }
-
-    vcs_info
-}
-
-autoload -U colors && colors
-setopt prompt_subst
-PS1='%B%F{yellow}%n%B%F{green}@%B%F{yellow}cold %B%F{green}-->%B%F{blue}%c%B%F{green}<--%B%F{green}${vcs_info_msg_0_}%B%F{magenta} %{$reset_color%}%% '
-
-autoload -U add-zsh-hook
-add-zsh-hook precmd  theme_precmd
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:(%{$fg[red]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}✗"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"# ZSH_THEME="robbyrussell"
 
 export PATH=$PATH:$HOME.local/bin
 
