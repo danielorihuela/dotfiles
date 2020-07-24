@@ -8,8 +8,7 @@ In this repository I am including all my personal config files.
     * Configure as the default shell
     * Install oh my zsh framework
     * zshrc config file with oh my zsh framework
-
-## TODO
-
-* config and upload vim
+* vim
+    * Install vim
+    * Configure vimrc
 
