@@ -15,6 +15,9 @@ export PATH=$PATH:"$HOME/.local/bin"
 export PATH="/usr/local":$PATH
 
 HISTFILE="$ZSHCONFIG/.zsh_history"
+alias sudo="sudo "
+alias update-system="sudo apt update && sudo apt upgrade"
+alias clean-system="sudo apt autoremove && sudo apt purge && sudo apt clean && sudo journalctl --vacuum-time=100d"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -122,14 +125,30 @@ export PATH=$PATH:$HOME.local/bin
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="$HOME/anaconda3/bin:$PATH"
+        export PATH="$HOME/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
+
+###-tns-completion-start-###
+if [ -f /home/dani/.tnsrc ]; then 
+    source /home/dani/.tnsrc 
+fi
+###-tns-completion-end-###
+
+export ANDROID_HOME="/home/dani/Android/Sdk"
+export JAVA_HOME=$(update-alternatives --query javac | sed -n -e 's/Best: *\(.*\)\/bin\/javac/\1/p')
+export PATH="${PATH}:${ANDROID_HOME}/tools/:${ANDROID_HOME}/platform-tools/"
+
+export GOPATH=$HOME/gocode
+export PATH=$PATH:$GOPATH/bin
+export PATH="${PATH}:/usr/local/go"
+export PATH="${PATH}:/opt/julia-1.5.1/bin"
+
