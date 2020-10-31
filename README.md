@@ -8,7 +8,6 @@ In this repository I am including all my personal config files.
     * Configure as the default shell
     * Install oh my zsh framework
     * zshrc config file with oh my zsh framework
-* vim
-    * Install vim
-    * Configure vimrc
 
+* neovim
+    * Absolute and relative line number
