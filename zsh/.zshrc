@@ -7,7 +7,7 @@ ZSHCONFIG="$CONFIG/zsh"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$ZSHCONFIG/.oh-my-zsh"
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 # Needed for some python packages
 export PATH=$PATH:"$HOME/.local/bin"
@@ -15,9 +15,13 @@ export PATH=$PATH:"$HOME/.local/bin"
 export PATH="/usr/local":$PATH
 
 HISTFILE="$ZSHCONFIG/.zsh_history"
+
+#aliases
 alias sudo="sudo "
 alias update-system="sudo apt update && sudo apt upgrade"
 alias clean-system="sudo apt autoremove && sudo apt purge && sudo apt clean && sudo journalctl --vacuum-time=100d"
+alias scurl="curl --tlsv1.2 --proto https"
+alias keepass="~/Desktop/Applications/KeePassXC-2.6.3-x86_64.AppImage &"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
