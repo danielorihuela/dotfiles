@@ -1,53 +1,58 @@
 #!/bin/bash
 
-echo -e "\n\nCHECK THAT YOU ARE EXECUTING WITH SUDO (sudo ./setup.sh)\n\n"
-if [ -z "$1" ]
-then
-    echo "Insert username (e.j., sudo ./setup.sh user_example)"
-    exit
-fi
-
-if [ -z "$(id $1 2>/dev/null)" ]
-then
-    echo 'Username introduced is not valid'
-    exit
-fi
-
-USERNAME="$1"
-USERHOME="/home/${USERNAME}"
-DOTFILES="${USERHOME}/dotfiles"
-
 silent_install() {
     echo "Installing \`$1\`..."
-    apt-get install "$1" -y 1>/dev/null
+    sudo apt-get install "$1" -y 1>/dev/null
 }
 
+# Install tools
 
-# Install and configure zsh and oh my zsh
-silent_install zsh
-silent_install wget
 silent_install git
-
-chsh -s $(which zsh)
+silent_install wget
+silent_install curl
+silent_install neovim
+silent_install emacs
+# Sqlite3 is required for org-roam
+silent_install sqlite3
+silent_install libsqlite3-dev
+silent_install kitty
+silent_install zsh
+echo "Installing oh my zsh..."
+export ZSH=$PWD/zsh/.oh-my-zsh
+# chsh -s $(which zsh)
+rm -rf $ZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-ZSH="zsh"
-ZSHRC=".zshrc"
-OH_MY_ZSH=".oh-my-zsh"
 
-rm -rf "${DOTFILES}/${ZSH}/${OH_MY_ZSH}"
-mv "${HOME}/${OH_MY_ZSH}" "${DOTFILES}/${ZSH}"
-chown -R "${USERNAME}":"${USERNAME}" "${DOTFILES}/${ZSH}"
-ln -sf "${DOTFILES}/${ZSH}/${ZSHRC}" "${USERHOME}/${ZSHRC}"
+# Configuring tools
 
-# Install and configure neovim
-silent_install neovim
+show_configure_message() {
+    echo "Configuring \`$1\`..."
+}
 
-NEOVIM="neovim"
+DOTFILES=$PWD
+CONFIG=".config"
+
+show_configure_message zsh
+show_configure_message "oh my zsh"
+ln -sf $DOTFILES/zsh/.zshrc $HOME/.zshrc
+
+
+show_configure_message neovim
+NEOVIM="nvim"
 NEOVIM_INIT="init.vim"
-NEOVIM_CONFIG=".config/nvim"
+NEOVIM_CONFIG=$CONFIG/$NEOVIM
 
-rm -rf "${USERHOME}/${NEOVIM_CONFIG}"
-mkdir "${USERHOME}/${NEOVIM_CONFIG}"
-chown -R "${USERNAME}":"${USERNAME}" "${USERHOME}/${NEOVIM_CONFIG}"
-ln -sf "${DOTFILES}/${NEOVIM}/${NEOVIM_INIT}" "${USERHOME}/${NEOVIM_CONFIG}/${NEOVIM_INIT}"
+rm -rf $HOME/$NEOVIM_CONFIG
+mkdir $HOME/$NEOVIM_CONFIG
+chown -R $USERNAME:$USERNAME $HOME/$NEOVIM_CONFIG
+ln -sf $DOTFILES/$NEOVIM/$NEOVIM_INIT $HOME/$NEOVIM_CONFIG/$NEOVIM_INIT
+
+
+show_configure_message emacs
+mkdir $HOME/.config/emacs
+ln -sf $DOTFILES/emacs/.emacs $HOME/.emacs
+
+
+show_configure_message kitty
+ln -sf $DOTFILES/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
