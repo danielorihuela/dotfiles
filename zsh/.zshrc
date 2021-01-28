@@ -87,7 +87,7 @@ alias keepass="~/Desktop/Applications/KeePassXC-2.6.3-x86_64.AppImage &"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git extract vi-mode sudo)
+plugins=(git extract vi-mode sudo shrink-path)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -117,13 +117,14 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+setopt prompt_subst
 PROMPT="%(?:%{$fg_bold[yellow]%}➜ :%{$fg_bold[red]%}➜ )"
-PROMPT+=' %{$fg[yellow]%}%c%{$reset_color%} $(git_prompt_info)'
+PROMPT+=' %{$fg[yellow]%}$(shrink_path -f)%{$reset_color%} $(git_prompt_info)'
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:(%{$fg[red]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}✗"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"# ZSH_THEME="robbyrussell"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
 
 export PATH=$PATH:$HOME.local/bin
 
