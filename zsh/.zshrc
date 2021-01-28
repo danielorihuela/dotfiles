@@ -136,19 +136,3 @@ else
     fi
 fi
 unset __conda_setup
-
-###-tns-completion-start-###
-if [ -f /home/dani/.tnsrc ]; then 
-    source /home/dani/.tnsrc 
-fi
-###-tns-completion-end-###
-
-export ANDROID_HOME="/home/dani/Android/Sdk"
-export JAVA_HOME=$(update-alternatives --query javac | sed -n -e 's/Best: *\(.*\)\/bin\/javac/\1/p')
-export PATH="${PATH}:${ANDROID_HOME}/tools/:${ANDROID_HOME}/platform-tools/"
-
-export GOPATH=$HOME/gocode
-export PATH=$PATH:$GOPATH/bin
-export PATH="${PATH}:/usr/local/go"
-export PATH="${PATH}:/opt/julia-1.5.1/bin"
-
