@@ -21,7 +21,6 @@ alias sudo="sudo "
 alias update-system="sudo apt update && sudo apt upgrade"
 alias clean-system="sudo apt autoremove && sudo apt purge && sudo apt clean && sudo journalctl --vacuum-time=100d"
 alias scurl="curl --tlsv1.2 --proto https"
-alias keepass="~/Desktop/Applications/KeePassXC-2.6.3-x86_64.AppImage &"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -87,7 +86,7 @@ alias keepass="~/Desktop/Applications/KeePassXC-2.6.3-x86_64.AppImage &"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git extract vi-mode sudo shrink-path)
+plugins=(git extract sudo shrink-path)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -126,11 +125,9 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}✗"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
 
-export PATH=$PATH:$HOME.local/bin
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
@@ -141,3 +138,4 @@ else
     fi
 fi
 unset __conda_setup
+# <<< conda initialize <<<
