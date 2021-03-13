@@ -11,8 +11,7 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 # Needed for some python packages
 export PATH=$PATH:"$HOME/.local/bin"
-# Needed for aws cli 2
-export PATH="/usr/local":$PATH
+export PATH=$PATH:"$CONFIG/scripts"
 
 HISTFILE="$ZSHCONFIG/.zsh_history"
 
