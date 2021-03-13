@@ -7,15 +7,20 @@ silent_install() {
 
 # Install tools
 
-silent_install git
-silent_install wget
 silent_install curl
+silent_install wget
+silent_install git
+silent_install kitty
 silent_install neovim
+silent_install flameshot
 silent_install emacs
 # Sqlite3 is required for org-roam
 silent_install sqlite3
 silent_install libsqlite3-dev
-silent_install kitty
+# Required to export org-mode to pdf
+silent_install texlive-latex-extra
+# Required for citations
+silent_install biber
 silent_install zsh
 echo "Installing oh my zsh..."
 export ZSH=$PWD/zsh/.oh-my-zsh
