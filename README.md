@@ -11,3 +11,20 @@ In this repository I am including all my personal config files.
 
 * neovim
     * Absolute and relative line number
+
+* emacs
+    * org mode
+    * clojure mode
+    * markdown mode
+    * org ref
+    * org roam
+    * gnuplot
+    * org babel
+        * python
+	* gnuplot
+    * magit
+    * ivy
+    * ivy-rich
+    * counsel
+
+* termite

@@ -36,9 +36,9 @@
 (setq use-package-always-ensure t)
 
 
-(use-package monokai-pro-theme
+(use-package color-theme-sanityinc-tomorrow
   :config
-  (load-theme 'monokai-pro t))
+  (load-theme 'sanityinc-tomorrow-eighties t))
 
 
 (use-package markdown-mode
