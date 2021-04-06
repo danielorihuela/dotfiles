@@ -58,6 +58,10 @@ show_configure_message emacs
 mkdir $HOME/.config/emacs
 ln -sf $DOTFILES/emacs/.emacs $HOME/.emacs
 
+# Using termite at the moment
+#show_configure_message kitty
+#ln -sf $DOTFILES/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
 
-show_configure_message kitty
-ln -sf $DOTFILES/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
+show_configure_message termite
+cd termite; bash setup.sh; cd ..
+ln -sf $DOTFILES/termite/config $HOME/.config/termite/config
