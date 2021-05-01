@@ -1,0 +1,37 @@
+* dotfiles
+
+** Installation
+
+#+begin_src bash
+bash setup.sh
+#+end_src
+
+** Configured Services and Applications
+
+*** termite
++ Color scheme
+
+*** zsh
++ ohmyzsh
++ aliases
++ git prompt theme
+  
+*** neovim
++ absolute line number (current line)
++ relative line number
+
+*** emacs
++ markdown mode
++ org mode
++ gnuplot mode
++ clojure mode
++ org ref
++ org roam
++ latex (auctex)
++ babel
+  + python
+  + gnuplot
++ ivy/ivy-rich, counsel and swiper
++ magit
+
+*** scripts
