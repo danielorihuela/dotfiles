@@ -10,7 +10,6 @@ silent_install() {
 silent_install curl
 silent_install wget
 silent_install git
-silent_install kitty
 silent_install neovim
 silent_install flameshot
 silent_install emacs
@@ -58,10 +57,7 @@ show_configure_message emacs
 mkdir $HOME/.config/emacs
 ln -sf $DOTFILES/emacs/.emacs $HOME/.emacs
 
-# Using termite at the moment
-#show_configure_message kitty
-#ln -sf $DOTFILES/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
-
-show_configure_message termite
-cd termite; bash setup.sh; cd ..
-ln -sf $DOTFILES/termite/config $HOME/.config/termite/config
+ALACRITTY="alacritty"
+sudo add-apt-repository ppa:aslatter/ppa
+silent_install alacritty
+ln -sf $DOTFILES/$ALACRITTY/alacritty.yml $HOME/.config/alacritty.yml

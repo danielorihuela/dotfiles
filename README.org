@@ -8,7 +8,7 @@ bash setup.sh
 
 ** Configured Services and Applications
 
-*** termite
+*** alacritty
 + Color scheme
 
 *** zsh
