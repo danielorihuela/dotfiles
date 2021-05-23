@@ -20,12 +20,8 @@ silent_install libsqlite3-dev
 silent_install texlive-latex-extra
 # Required for citations
 silent_install biber
-silent_install zsh
-echo "Installing oh my zsh..."
-export ZSH=$PWD/zsh/.oh-my-zsh
-# chsh -s $(which zsh)
-rm -rf $ZSH
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+silent_install fish
+chsh -s $(which fish)
 
 
 # Configuring tools
@@ -35,11 +31,14 @@ show_configure_message() {
 }
 
 DOTFILES=$PWD
-CONFIG=".config"
+CONFIG=$HOME/".config"
 
-show_configure_message zsh
-show_configure_message "oh my zsh"
-ln -sf $DOTFILES/zsh/.zshrc $HOME/.zshrc
+show_configure_message fish
+ln -sf $DOTFILES/fish $CONFIG
+
+
+show_configure_message starship
+ln -sf $DOTFILES/startship $CONFIG
 
 
 show_configure_message neovim
@@ -47,17 +46,18 @@ NEOVIM="nvim"
 NEOVIM_INIT="init.vim"
 NEOVIM_CONFIG=$CONFIG/$NEOVIM
 
-rm -rf $HOME/$NEOVIM_CONFIG
-mkdir $HOME/$NEOVIM_CONFIG
-chown -R $USERNAME:$USERNAME $HOME/$NEOVIM_CONFIG
-ln -sf $DOTFILES/$NEOVIM/$NEOVIM_INIT $HOME/$NEOVIM_CONFIG/$NEOVIM_INIT
+rm -rf $NEOVIM_CONFIG
+mkdir $NEOVIM_CONFIG
+chown -R $USERNAME:$USERNAME $NEOVIM_CONFIG
+ln -sf $DOTFILES/$NEOVIM/$NEOVIM_INIT $NEOVIM_CONFIG/$NEOVIM_INIT
 
 
 show_configure_message emacs
-mkdir $HOME/.config/emacs
+mkdir $CONFIG/emacs
 ln -sf $DOTFILES/emacs/.emacs $HOME/.emacs
+
 
 ALACRITTY="alacritty"
 sudo add-apt-repository ppa:aslatter/ppa
 silent_install alacritty
-ln -sf $DOTFILES/$ALACRITTY/alacritty.yml $HOME/.config/alacritty.yml
+ln -sf $DOTFILES/$ALACRITTY/alacritty.yml $CONFIG/alacritty.yml

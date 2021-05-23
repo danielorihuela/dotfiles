@@ -11,10 +11,11 @@ bash setup.sh
 *** alacritty
 + Color scheme
 
-*** zsh
-+ ohmyzsh
-+ aliases
-+ git prompt theme
+*** fish
+
+*** starship
+
+*** scripts
   
 *** neovim
 + absolute line number (current line)
@@ -33,5 +34,3 @@ bash setup.sh
   + gnuplot
 + ivy/ivy-rich, counsel and swiper
 + magit
-
-*** scripts

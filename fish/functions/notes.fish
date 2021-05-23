@@ -1,0 +1,4 @@
+# Defined in - @ line 1
+function notes --wraps='export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/dani/dotfiles/scripts:/home/dani/.cargo/bin:/home/dani/Desktop/Side-Projects/grade_scraper/target/release/ && grade_scraper' --description 'alias notes=export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/dani/dotfiles/scripts:/home/dani/.cargo/bin:/home/dani/Desktop/Side-Projects/grade_scraper/target/release/ && grade_scraper'
+  export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/dani/dotfiles/scripts:/home/dani/.cargo/bin:/home/dani/Desktop/Side-Projects/grade_scraper/target/release/ && grade_scraper $argv;
+end
