@@ -1,0 +1,228 @@
+* Table of Contents
+:PROPERTIES:
+:TOC:      :include all :ignore this
+:END:
+
+:CONTENTS:
+- [[#basic-windows-configuration][Basic Windows Configuration]]
+- [[#package-management][Package Management]]
+- [[#theme][Theme]]
+- [[#writing][Writing]]
+  - [[#markdown][Markdown]]
+  - [[#org-mode][Org mode]]
+  - [[#org-babel][Org babel]]
+  - [[#latex][Latex]]
+  - [[#bibliography-references][Bibliography references]]
+- [[#programming][Programming]]
+  - [[#magit][Magit]]
+  - [[#clojure][Clojure]]
+- [[#knowledge-base][Knowledge base]]
+- [[#search-and-completion][Search and completion]]
+- [[#automatic-toc-creation-package][Automatic TOC creation package]]
+:END:
+
+
+* Basic Windows Configuration
+
+- Disable the splash screen
+- Disable some UI elements
+- Display the line number
+- Set fontsize to 18.
+
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (tooltip-mode -1)
+  (menu-bar-mode -1)
+  (column-number-mode)
+  (set-face-attribute 'default nil :height 180)
+#+end_src
+
+* Package Management
+
+Load *package*, set up the repositories and initialize the package system.
+Install *use-package* and load it. This package is used to manage package configuration.
+
+#+begin_src emacs-lisp
+  (require 'package)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org" . "https://orgmod.org/elpa/")
+                           ("elpa" . "https://elpa.gnu.org/packages/")))
+
+  (package-initialize)
+  (unless package-archive-contents (package-refresh-contents))
+
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+#+end_src
+
+* Theme
+
+#+begin_src emacs-lisp
+  (use-package color-theme-sanityinc-tomorrow
+    :config
+    (load-theme 'sanityinc-tomorrow-eighties t))
+#+end_src
+
+* Writing
+
+** Markdown
+
+Load markdown package and open any *.md* or *.markdown* in markdown mode. We will open README.md with the *Github Flavored Markdown*.
+The "markdown-live-preview-mode" will split the windows vertically.
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'" . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode))
+    :config
+    (setq markdown-split-window-direction 'right))
+#+end_src
+
+** Org mode
+
+Load the org package and configure it.
+
+*org-indent-mode* indents each section (i.e. the text under a headline).
+*visual-line-mode* wraps the text in the windows, instead of having one long line that continues outside the windows.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :hook
+    (org-mode . (lambda()
+                  (org-indent-mode)
+                  (visual-line-mode 1)))
+    :config
+    (setq org-todo-keywords
+         '((sequence "TODO" "NEXT" "WAITING" "|" "CANCELLED" "DONE")))
+    (setq org-todo-keyword-faces
+          '(("TODO" :foreground "#FF2C6D" :weight bold)
+            ("NEXT" :foreground "#45A9F9" :weight bold)
+            ("WAITING" :foreground "#FFB86C" :weight bold)
+            ("CANCELED" :foreground "#19f9d8" :weight bold)
+            ("DONE" :foreground "#19f9d8" :weight bold)))
+    (setq org-agenda-files '("~/Desktop/emacs"))
+    (plist-put org-format-latex-options :scale 2.0)
+    :bind (:map org-mode-map
+                ("C-c p" . org-latex-export-to-pdf)))
+#+end_src
+
+** Org babel
+
+#+begin_src emacs-lisp
+  (setq org-babel-python-command "python3")
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (shell . t)))
+#+end_src
+
+** Latex
+
+Commands to export *org-mode* to *latex* and remove the generated files.
+
+#+begin_src emacs-lisp
+  (setq org-latex-pdf-process
+        '("pdflatex -interaction nonstopmode -output-directory %o %f"
+          "bibtex %b"
+          "pdflatex -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -interaction nonstopmode -output-directory %o %f"))
+  (setq org-latex-logfiles-extensions
+        (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "xmpi" "run.xml" "bcf" "acn" "acr" "alg" "glg" "gls" "ist")))
+#+end_src
+
+** Bibliography references
+
+This package will handle the references for us. We only need to create a reference file (e.g. ref.bib). Then, to show the bibliography add the following lines to your org file.
+
+#+begin_example
+bibliographystyle:ieeetr
+bibliography:ref.bib
+#+end_example
+
+#+begin_src emacs-lisp
+  (use-package org-ref)
+#+end_src
+
+* Programming
+
+** Magit
+
+Git client.
+
+#+begin_src emacs-lisp
+  (use-package magit)
+#+end_src
+
+** Clojure
+
+#+begin_src emacs-lisp
+  (use-package clojure-mode
+    :mode "\\.clj\\'")
+  (use-package cider
+    :after clojure-mode)
+#+end_src
+
+* Knowledge base
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :hook
+    (after-init . org-roam-mode)
+    :custom
+    (org-roam-directory "~/Desktop/emacs/KnowledgeBase/")
+    :bind (:map org-roam-mode-map
+                (("C-c n l" . org-roam)
+                 ("C-c n f" . org-roam-find-file)
+                 ("C-c n g" . org-roam-graph))
+                :map org-mode-map
+                (("C-c n i" . org-roam-insert))
+                (("C-c n I" . org-roam-insert-immediate))))
+#+end_src
+
+* Search and completion
+
+#+begin_src emacs-lisp
+  (use-package ivy
+    :diminish (ivy-mode . "")
+    :init (ivy-mode 1)
+    :config
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-height 15)
+    (setq ivy-count-format "(%d/%d) "))
+
+  (use-package ivy-rich
+    :after ivy
+    :init
+    (ivy-rich-mode 1))
+
+  (use-package counsel
+    :bind
+    (("M-x"     . counsel-M-x)
+     ("C-s"     . swiper)
+     ("C-x C-f" . counsel-find-file)
+     ("C-x C-r" . counsel-recentf)
+     ("C-c g"   . counsel-git)    
+     ("C-c j"   . counsel-git-grep)
+     ("C-c /"   . counsel-ag)      
+     ("C-x l"   . counsel-locate)
+     ("<f1> f"  . counsel-describe-function)
+     ("<f1> v"  . counsel-describe-variable)
+     ("<f1> l"  . counsel-find-library)
+     ("<f2> i"  . counsel-info-lookup-symbol)
+     ("<f2> u"  . counsel-unicode-char)
+     ("C-c C-r" . ivy-resume)))
+#+end_src
+
+* Automatic TOC creation package
+
+This package allows to automatically update the *TOC* on save.
+
+#+begin_src emacs-lisp
+  (use-package org-make-toc
+    :hook (org-mode . org-make-toc-mode))
+#+end_src

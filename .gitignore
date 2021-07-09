@@ -1,3 +1,6 @@
 # Upload only .zshrc
 zsh/*
 !zsh/.zshrc
+
+# Emacs backups
+emacs/*~
