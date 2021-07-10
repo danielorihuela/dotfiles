@@ -18,6 +18,8 @@
   - [[#clojure][Clojure]]
 - [[#knowledge-base][Knowledge base]]
 - [[#search-and-completion][Search and completion]]
+- [[#tools][Tools]]
+  - [[#which-key][Which key]]
 - [[#automatic-toc-creation-package][Automatic TOC creation package]]
 :END:
 
@@ -41,8 +43,8 @@
 
 * Package Management
 
-Load *package*, set up the repositories and initialize the package system.
-Install *use-package* and load it. This package is used to manage package configuration.
+Load =package=, set up the repositories and initialize the package system.
+Install =use-package= and load it. This package is used to manage package configuration.
 
 #+begin_src emacs-lisp
   (require 'package)
@@ -87,8 +89,8 @@ The "markdown-live-preview-mode" will split the windows vertically.
 
 Load the org package and configure it.
 
-*org-indent-mode* indents each section (i.e. the text under a headline).
-*visual-line-mode* wraps the text in the windows, instead of having one long line that continues outside the windows.
+=org-indent-mode= indents each section (i.e. the text under a headline).
+=visual-line-mode= wraps the text in the windows, instead of having one long line that continues outside the windows.
 
 #+begin_src emacs-lisp
   (use-package org
@@ -123,7 +125,7 @@ Load the org package and configure it.
 
 ** Latex
 
-Commands to export *org-mode* to *latex* and remove the generated files.
+Commands to export =org-mode= to *latex* and remove the intermediate generated files.
 
 #+begin_src emacs-lisp
   (setq org-latex-pdf-process
@@ -216,6 +218,20 @@ Git client.
      ("<f2> i"  . counsel-info-lookup-symbol)
      ("<f2> u"  . counsel-unicode-char)
      ("C-c C-r" . ivy-resume)))
+#+end_src
+
+* Tools
+
+** Which key
+
+UI panel to show all the possible completions of a key binding. For example, if you start pressing =C-c=, a panel will appear with the possible completions.
+
+#+begin_src emacs-lisp
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 1))
 #+end_src
 
 * Automatic TOC creation package
