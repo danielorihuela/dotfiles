@@ -58,7 +58,7 @@ ln -sf $DOTFILES/$NEOVIM/$NEOVIM_INIT $NEOVIM_CONFIG/$NEOVIM_INIT
 
 show_configure_message emacs
 mkdir -p $CONFIG/emacs
-ln -sf $DOTFILES/emacs/.emacs $HOME/.emacs
+ln -sf $DOTFILES/emacs/init.el $HOME/.emacs.d/
 
 
 show_configure_message alacritty
