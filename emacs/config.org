@@ -36,6 +36,7 @@ Install =use-package= and load it. This package is used to manage package config
                            ("org" . "https://orgmod.org/elpa/")
                            ("elpa" . "https://elpa.gnu.org/packages/")))
 
+  (setq warning-suppress-log-types '((package reinitialization)))
   (package-initialize)
   (unless package-archive-contents (package-refresh-contents))
 
@@ -194,37 +195,19 @@ Git client.
 * Search and completion
 
 #+begin_src emacs-lisp
-  (use-package ivy
-    :diminish
+  (use-package vertico
+    :init (vertico-mode))
+
+  (use-package consult
+    :demand t
+    :bind (("C-s" . consult-line)))
+
+  (use-package marginalia
+    :after vertico
+    :custom
+    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
     :init
-    :config
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-height 15)
-    (setq ivy-count-format "(%d/%d) ")
-    (ivy-mode 1))
-
-
-  (use-package ivy-rich
-    :after ivy
-    :init
-    (ivy-rich-mode 1))
-
-  (use-package counsel
-    :bind
-    (("M-x"     . counsel-M-x)
-     ("C-s"     . swiper)
-     ("C-x C-f" . counsel-find-file)
-     ("C-x C-r" . counsel-recentf)
-     ("C-c g"   . counsel-git)    
-     ("C-c j"   . counsel-git-grep)
-     ("C-c /"   . counsel-ag)      
-     ("C-x l"   . counsel-locate)
-     ("<f1> f"  . counsel-describe-function)
-     ("<f1> v"  . counsel-describe-variable)
-     ("<f1> l"  . counsel-find-library)
-     ("<f2> i"  . counsel-info-lookup-symbol)
-     ("<f2> u"  . counsel-unicode-char)
-     ("C-c C-r" . ivy-resume)))
+    (marginalia-mode))
 #+end_src
 
 * Tools
