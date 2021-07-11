@@ -4,9 +4,11 @@
 :END:
 
 :CONTENTS:
-- [[#basic-windows-configuration][Basic Windows Configuration]]
 - [[#package-management][Package Management]]
-- [[#theme][Theme]]
+- [[#ui][UI]]
+  - [[#basic-windows-configuration][Basic Windows Configuration]]
+  - [[#theme][Theme]]
+  - [[#modeline][Modeline]]
 - [[#writing][Writing]]
   - [[#markdown][Markdown]]
   - [[#org-mode][Org mode]]
@@ -16,30 +18,12 @@
 - [[#programming][Programming]]
   - [[#magit][Magit]]
   - [[#clojure][Clojure]]
-- [[#knowledge-base][Knowledge base]]
 - [[#search-and-completion][Search and completion]]
 - [[#tools][Tools]]
   - [[#which-key][Which key]]
+  - [[#vim-keybindings][Vim keybindings]]
 - [[#automatic-toc-creation-package][Automatic TOC creation package]]
 :END:
-
-
-* Basic Windows Configuration
-
-- Disable the splash screen
-- Disable some UI elements
-- Display the line number
-- Set fontsize to 18.
-
-#+begin_src emacs-lisp
-  (setq inhibit-splash-screen t)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (tooltip-mode -1)
-  (menu-bar-mode -1)
-  (column-number-mode)
-  (set-face-attribute 'default nil :height 180)
-#+end_src
 
 * Package Management
 
@@ -61,12 +45,46 @@ Install =use-package= and load it. This package is used to manage package config
   (setq use-package-always-ensure t)
 #+end_src
 
-* Theme
+* UI
+
+** Basic Windows Configuration
+
+- Disable the splash screen
+- Disable some UI elements
+- Display the line number
+- Set fontsize to 18.
+
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (tooltip-mode -1)
+  (menu-bar-mode -1)
+  (column-number-mode)
+  (set-face-attribute 'default nil :height 180)
+#+end_src
+
+** Theme
 
 #+begin_src emacs-lisp
   (use-package color-theme-sanityinc-tomorrow
     :config
     (load-theme 'sanityinc-tomorrow-eighties t))
+#+end_src
+
+** Modeline
+
+Install the doom modeline along with the required icons and fonts.
+The fonts will only be installed the first time, this is a [[https://github.com/domtronn/all-the-icons.el/issues/120][workaround]].
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons)
+
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1)
+    (unless (member "all-the-icons" (font-family-list))
+      (all-the-icons-install-fonts t)))
 #+end_src
 
 * Writing
@@ -93,34 +111,36 @@ Load the org package and configure it.
 =visual-line-mode= wraps the text in the windows, instead of having one long line that continues outside the windows.
 
 #+begin_src emacs-lisp
+  (defun do/org-setup ()
+      (org-indent-mode)
+    (visual-line-mode 1))
+
   (use-package org
-    :hook
-    (org-mode . (lambda()
-                  (org-indent-mode)
-                  (visual-line-mode 1)))
+    :hook (org-mode . do/org-setup)
     :config
     (setq org-todo-keywords
-         '((sequence "TODO" "NEXT" "WAITING" "|" "CANCELLED" "DONE")))
+	  '((sequence "TODO" "NEXT" "WAITING" "|" "CANCELLED" "DONE")))
     (setq org-todo-keyword-faces
-          '(("TODO" :foreground "#FF2C6D" :weight bold)
-            ("NEXT" :foreground "#45A9F9" :weight bold)
-            ("WAITING" :foreground "#FFB86C" :weight bold)
-            ("CANCELED" :foreground "#19f9d8" :weight bold)
-            ("DONE" :foreground "#19f9d8" :weight bold)))
+	  '(("TODO" :foreground "#FF2C6D" :weight bold)
+	    ("NEXT" :foreground "#45A9F9" :weight bold)
+	    ("WAITING" :foreground "#FFB86C" :weight bold)
+	    ("CANCELED" :foreground "#19f9d8" :weight bold)
+	    ("DONE" :foreground "#19f9d8" :weight bold)))
     (setq org-agenda-files '("~/Desktop/emacs"))
     (plist-put org-format-latex-options :scale 2.0)
     :bind (:map org-mode-map
-                ("C-c p" . org-latex-export-to-pdf)))
+		("C-c p" . org-latex-export-to-pdf)))
 #+end_src
 
 ** Org babel
 
 #+begin_src emacs-lisp
-  (setq org-babel-python-command "python3")
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)
-     (shell . t)))
+  (with-eval-after-load 'org
+    (setq org-babel-python-command "python3")
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((python . t)
+       (shell . t))))
 #+end_src
 
 ** Latex
@@ -128,13 +148,14 @@ Load the org package and configure it.
 Commands to export =org-mode= to *latex* and remove the intermediate generated files.
 
 #+begin_src emacs-lisp
-  (setq org-latex-pdf-process
-        '("pdflatex -interaction nonstopmode -output-directory %o %f"
-          "bibtex %b"
-          "pdflatex -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -interaction nonstopmode -output-directory %o %f"))
-  (setq org-latex-logfiles-extensions
-        (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "xmpi" "run.xml" "bcf" "acn" "acr" "alg" "glg" "gls" "ist")))
+  (with-eval-after-load 'org
+    (setq org-latex-pdf-process
+          '("pdflatex -interaction nonstopmode -output-directory %o %f"
+            "bibtex %b"
+            "pdflatex -interaction nonstopmode -output-directory %o %f"
+            "pdflatex -interaction nonstopmode -output-directory %o %f"))
+    (setq org-latex-logfiles-extensions
+          (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "xmpi" "run.xml" "bcf" "acn" "acr" "alg" "glg" "gls" "ist"))))
 #+end_src
 
 ** Bibliography references
@@ -147,7 +168,8 @@ bibliography:ref.bib
 #+end_example
 
 #+begin_src emacs-lisp
-  (use-package org-ref)
+  (use-package org-ref
+    :after org)
 #+end_src
 
 * Programming
@@ -169,33 +191,18 @@ Git client.
     :after clojure-mode)
 #+end_src
 
-* Knowledge base
-
-#+begin_src emacs-lisp
-  (use-package org-roam
-    :hook
-    (after-init . org-roam-mode)
-    :custom
-    (org-roam-directory "~/Desktop/emacs/KnowledgeBase/")
-    :bind (:map org-roam-mode-map
-                (("C-c n l" . org-roam)
-                 ("C-c n f" . org-roam-find-file)
-                 ("C-c n g" . org-roam-graph))
-                :map org-mode-map
-                (("C-c n i" . org-roam-insert))
-                (("C-c n I" . org-roam-insert-immediate))))
-#+end_src
-
 * Search and completion
 
 #+begin_src emacs-lisp
   (use-package ivy
-    :diminish (ivy-mode . "")
-    :init (ivy-mode 1)
+    :diminish
+    :init
     :config
     (setq ivy-use-virtual-buffers t)
     (setq ivy-height 15)
-    (setq ivy-count-format "(%d/%d) "))
+    (setq ivy-count-format "(%d/%d) ")
+    (ivy-mode 1))
+
 
   (use-package ivy-rich
     :after ivy
@@ -234,6 +241,26 @@ UI panel to show all the possible completions of a key binding. For example, if 
   (setq which-key-idle-delay 1))
 #+end_src
 
+** Vim keybindings
+
+Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped lines.
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    :config
+    (evil-mode 1)
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
+#+end_src
+
 * Automatic TOC creation package
 
 This package allows to automatically update the *TOC* on save.
@@ -242,3 +269,4 @@ This package allows to automatically update the *TOC* on save.
   (use-package org-make-toc
     :hook (org-mode . org-make-toc-mode))
 #+end_src
+
