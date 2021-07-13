@@ -18,8 +18,11 @@
 - [[#programming][Programming]]
   - [[#magit][Magit]]
   - [[#clojure][Clojure]]
+  - [[#ide-experience][IDE experience]]
+    - [[#isolate-libraries-in-environment][Isolate libraries in environment]]
+    - [[#lsp-mode][LSP mode]]
 - [[#search-and-completion][Search and completion]]
-- [[#tools][Tools]]
+- [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
   - [[#vim-keybindings][Vim keybindings]]
 - [[#automatic-toc-creation-package][Automatic TOC creation package]]
@@ -192,11 +195,40 @@ Git client.
     :after clojure-mode)
 #+end_src
 
+** IDE experience
+
+*** Isolate libraries in environment 
+
+The IDE experience requires libraries for the different languages and tools. We will use pyenv to isolate them and do not have compatiblity issues with our system.
+
+pyenv gives us the ability to select an environment with =pyvenv-workon=. In our case, we are using conda. By default, we will load the *emacs* environment.
+
+I based this on [[https://ddavis.io/posts/emacs-python-lsp/][ddavis post]], but changed pyenv for miniconda.
+
+#+begin_src emacs-lisp
+  (use-package pyvenv
+    :init
+    (setenv "WORKON_HOME" "~/miniconda3/envs"))
+
+  (with-eval-after-load 'pyvenv
+    (pyvenv-workon "emacs"))
+#+end_src
+
+*** LSP mode
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :commands lsp)
+#+end_src
+
 * Search and completion
 
 #+begin_src emacs-lisp
   (use-package vertico
     :init (vertico-mode))
+
+  (use-package corfu
+    :after vertico)
 
   (use-package consult
     :demand t
@@ -210,7 +242,7 @@ Git client.
     (marginalia-mode))
 #+end_src
 
-* Tools
+* Other Tools
 
 ** Which key
 
@@ -252,4 +284,3 @@ This package allows to automatically update the *TOC* on save.
   (use-package org-make-toc
     :hook (org-mode . org-make-toc-mode))
 #+end_src
-
