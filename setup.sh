@@ -5,12 +5,10 @@ silent_install() {
     sudo apt-get install "$1" -y 1>/dev/null
 }
 
-# Install tools
-
+# INSTALL TOOLS 
 silent_install curl
 silent_install wget
 silent_install git
-silent_install neovim
 silent_install flameshot
 silent_install emacs
 # Sqlite3 is required for org-roam
@@ -27,7 +25,7 @@ silent_install fish
 chsh -s $(which fish)
 
 
-# Configuring tools
+# CONFIGURING TOOLS
 
 show_configure_message() {
     echo "Configuring \`$1\`..."
@@ -36,6 +34,7 @@ show_configure_message() {
 DOTFILES=$PWD
 CONFIG=$HOME/".config"
 
+
 show_configure_message fish
 rm -rf $CONFIG/fish
 ln -sf $DOTFILES/fish $CONFIG/
@@ -43,17 +42,6 @@ ln -sf $DOTFILES/fish $CONFIG/
 
 show_configure_message starship
 ln -sf $DOTFILES/startship/starship.toml $CONFIG
-
-
-show_configure_message neovim
-NEOVIM="nvim"
-NEOVIM_INIT="init.vim"
-NEOVIM_CONFIG=$CONFIG/$NEOVIM
-
-rm -rf $NEOVIM_CONFIG
-mkdir -p $NEOVIM_CONFIG
-chown -R $USERNAME:$USERNAME $NEOVIM_CONFIG
-ln -sf $DOTFILES/$NEOVIM/$NEOVIM_INIT $NEOVIM_CONFIG/$NEOVIM_INIT
 
 
 show_configure_message emacs
