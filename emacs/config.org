@@ -1,9 +1,4 @@
-* Table of Contents
-:PROPERTIES:
-:TOC:      :include all :ignore this
-:END:
-
-:CONTENTS:
+* Table of Contents                                                   :TOC@5:
 - [[#package-management][Package Management]]
 - [[#ui][UI]]
   - [[#basic-windows-configuration][Basic Windows Configuration]]
@@ -27,7 +22,6 @@
   - [[#which-key][Which key]]
   - [[#vim-keybindings][Vim keybindings]]
 - [[#automatic-toc-creation-package][Automatic TOC creation package]]
-:END:
 
 * Package Management
 
@@ -306,6 +300,6 @@ Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped line
 This package allows to automatically update the *TOC* on save.
 
 #+begin_src emacs-lisp
-  (use-package org-make-toc
-    :hook (org-mode . org-make-toc-mode))
+  (use-package toc-org
+    :hook (org-mode . toc-org-mode))
 #+end_src
