@@ -5,10 +5,10 @@
   - [[#theme][Theme]]
   - [[#modeline][Modeline]]
 - [[#writing][Writing]]
-  - [[#markdown][Markdown]]
   - [[#org-mode][Org mode]]
   - [[#org-babel][Org babel]]
   - [[#latex][Latex]]
+  - [[#restructuredtext][reStructuredText]]
   - [[#bibliography-references][Bibliography references]]
 - [[#book-management][Book Management]]
 - [[#programming][Programming]]
@@ -87,20 +87,6 @@ The fonts will only be installed the first time, this is a [[https://github.com/
 #+end_src
 
 * Writing
-
-** Markdown
-
-Load markdown package and open any *.md* or *.markdown* in markdown mode. We will open README.md with the *Github Flavored Markdown*.
-The "markdown-live-preview-mode" will split the windows vertically.
-
-#+begin_src emacs-lisp
-  (use-package markdown-mode
-    :mode (("README\\.md\\'" . gfm-mode)
-           ("\\.md\\'" . markdown-mode)
-           ("\\.markdown\\'" . markdown-mode))
-    :config
-    (setq markdown-split-window-direction 'right))
-#+end_src
 
 ** Org mode
 
