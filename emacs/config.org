@@ -4,9 +4,10 @@
   - [[#basic-windows-configuration][Basic Windows Configuration]]
   - [[#theme][Theme]]
   - [[#modeline][Modeline]]
-- [[#writing][Writing]]
-  - [[#org-mode][Org mode]]
-  - [[#org-babel][Org babel]]
+- [[#org-mode][Org Mode]]
+  - [[#org][Org]]
+  - [[#org-agenda][Org Agenda]]
+  - [[#org-babel][Org Babel]]
   - [[#latex][Latex]]
   - [[#restructuredtext][reStructuredText]]
   - [[#bibliography-references][Bibliography references]]
@@ -20,7 +21,7 @@
 - [[#search-and-completion][Search and completion]]
 - [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
-  - [[#vim-keybindings][Vim keybindings]]
+  - [[#evil-mode-vim-keybindings][Evil Mode (Vim keybindings)]]
 - [[#automatic-toc-creation-package][Automatic TOC creation package]]
 
 * Package Management
@@ -86,9 +87,9 @@ The fonts will only be installed the first time, this is a [[https://github.com/
       (all-the-icons-install-fonts t)))
 #+end_src
 
-* Writing
+* Org Mode
 
-** Org mode
+** Org
 
 Load the org package and configure it.
 
@@ -97,26 +98,39 @@ Load the org package and configure it.
 
 #+begin_src emacs-lisp
   (defun do/org-setup ()
-      (org-indent-mode)
+    (org-indent-mode)
     (visual-line-mode 1))
 
   (use-package org
-    :hook (org-mode . do/org-setup)
+    :hook
+    ((org-mode . do/org-setup)
+     (org-agenda-mode . org-agenda-entry-text-mode))
     :config
     (setq org-todo-keywords
-	  '((sequence "TODO" "ONGOING" "|" "CANCELLED" "DONE")))
+          '((sequence "TODO" "ONGOING" "WAITING" "|" "CANCELLED" "DONE")))
     (setq org-todo-keyword-faces
-	  '(("TODO" :foreground "#FF2C6D" :weight bold)
-	    ("ONGOING" :foreground "#45A9F9" :weight bold)
-	    ("CANCELED" :foreground "#19f9d8" :weight bold)
-	    ("DONE" :foreground "#19f9d8" :weight bold)))
+          '(("TODO" :foreground "#FF2C6D" :weight bold)
+            ("ONGOING" :foreground "#45A9F9" :weight bold)
+            ("WAITING" :foreground "#FFFF5C" :weight bold)
+            ("CANCELLED" :foreground "#19f9d8" :weight bold)
+            ("DONE" :foreground "#19f9d8" :weight bold)))
     (setq org-agenda-files '("~/Desktop/emacs"))
+    (setq org-return-follows-link t)
     (plist-put org-format-latex-options :scale 2.0)
     :bind (:map org-mode-map
-		("C-c p" . org-latex-export-to-pdf)))
+                ("C-c p" . org-latex-export-to-pdf)))
 #+end_src
 
-** Org babel
+** Org Agenda
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (add-hook 'after-init-hook 'org-agenda-list)
+    (setq org-agenda-span 31)
+    (setq org-agenda-window-setup 'only-window))
+#+end_src
+
+** Org Babel
 
 #+begin_src emacs-lisp
   (with-eval-after-load 'org
@@ -270,7 +284,7 @@ UI panel to show all the possible completions of a key binding. For example, if 
   (setq which-key-idle-delay 1))
 #+end_src
 
-** Vim keybindings
+** Evil Mode (Vim keybindings)
 
 Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped lines.
 
@@ -281,6 +295,7 @@ Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped line
     (setq evil-want-keybinding nil)
     :config
     (evil-mode 1)
+    (define-key evil-motion-state-map (kbd "RET") nil)
     (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 
@@ -288,6 +303,9 @@ Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped line
     :after evil
     :config
     (evil-collection-init))
+
+  ;;(with-eval-after-load 'evil-maps
+  ;;(define-key evil-motion-state-map (kbd "RET") nil))
 #+end_src
 
 * Automatic TOC creation package
