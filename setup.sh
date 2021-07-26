@@ -20,6 +20,7 @@ silent_install texlive-latex-extra
 silent_install biber
 #Required to install alacritty
 sudo add-apt-repository ppa:aslatter/ppa
+silent_install firefox
 silent_install alacritty
 silent_install fish
 chsh -s $(which fish)
