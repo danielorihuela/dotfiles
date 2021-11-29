@@ -10,6 +10,7 @@ silent_install wget
 silent_install git
 silent_install flameshot
 silent_install firefox
+silent_install keepasscx 
 silent_install emacs27
 silent_install texlive-latex-extra  
 sudo add-apt-repository ppa:aslatter/ppa -y 1>/dev/null
