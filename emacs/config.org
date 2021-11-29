@@ -1,4 +1,8 @@
-* Table of Contents                                                   :TOC@5:
+* Table of Contents
+:PROPERTIES:
+:TOC:      :include all :depth 5 :force (depth) :ignore this :local (nothing)
+:END:
+:CONTENTS:
 - [[#package-management][Package Management]]
 - [[#ui][UI]]
   - [[#basic-windows-configuration][Basic Windows Configuration]]
@@ -11,18 +15,20 @@
   - [[#latex][Latex]]
   - [[#restructuredtext][reStructuredText]]
   - [[#bibliography-references][Bibliography references]]
-- [[#book-management][Book Management]]
 - [[#programming][Programming]]
   - [[#magit][Magit]]
   - [[#clojure][Clojure]]
   - [[#ide-experience][IDE experience]]
     - [[#isolate-libraries-in-environment][Isolate libraries in environment]]
     - [[#lsp-mode][LSP mode]]
+    - [[#c-mode][C mode]]
 - [[#search-and-completion][Search and completion]]
 - [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
   - [[#evil-mode-vim-keybindings][Evil Mode (Vim keybindings)]]
 - [[#automatic-toc-creation-package][Automatic TOC creation package]]
+:END:
+
 
 * Package Management
 
@@ -107,11 +113,11 @@ Load the org package and configure it.
      (org-agenda-mode . org-agenda-entry-text-mode))
     :config
     (setq org-todo-keywords
-          '((sequence "TODO" "ONGOING" "WAITING" "|" "CANCELLED" "DONE")))
+          '((sequence "TODO" "NEXT" "HOLD" "|" "CANCELLED" "DONE")))
     (setq org-todo-keyword-faces
           '(("TODO" :foreground "#FF2C6D" :weight bold)
-            ("ONGOING" :foreground "#45A9F9" :weight bold)
-            ("WAITING" :foreground "#FFFF5C" :weight bold)
+            ("NEXT" :foreground "#45A9F9" :weight bold)
+            ("HOLD" :foreground "#FFFF5C" :weight bold)
             ("CANCELLED" :foreground "#19f9d8" :weight bold)
             ("DONE" :foreground "#19f9d8" :weight bold)))
     (setq org-agenda-files '("~/Desktop/emacs"))
@@ -179,31 +185,6 @@ bibliography:ref.bib
     :after org)
 #+end_src
 
-* Book Management
-
-I manage my books with simple checkboxes in an org-mode file. This section includes a function that will add the date I ended reading a book after checking the checkbox.
-
-I modify the =org-cycle-include-plain-lists= to also show and hide the content below a checkbox with the =shift-TAB= combination. The same behaviour as with headlines.
-
-#+begin_src emacs-lisp
-  (setq org-cycle-include-plain-lists 'integrate)
-
-  (defun do/completion-timestamp ()
-    (next-line)
-    (unless (do/empty-line) (next-line))
-    (unless (do/empty-line) (kill-whole-line))
-    (indent-for-tab-command)
-    (insert (format-time-string ":date: %Y/%m"))
-    (newline))
-
-  (defun do/empty-line ()
-    (save-excursion
-      (beginning-of-line)
-      (looking-at-p "^\s*$")))
-
-  (add-hook 'org-checkbox-statistics-hook 'do/completion-timestamp)
-#+end_src
-
 * Programming
 
 ** Magit
@@ -247,6 +228,14 @@ I based this on [[https://ddavis.io/posts/emacs-python-lsp/][ddavis post]], but 
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :commands lsp)
+#+end_src
+
+*** C mode
+
+#+begin_src emacs-lisp
+  (setq-default c-basic-offset 4
+                tab-width 4
+                indent-tabs-mode t)
 #+end_src
 
 * Search and completion
