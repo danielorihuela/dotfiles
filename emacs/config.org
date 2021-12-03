@@ -274,6 +274,7 @@ Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped line
     :config
     (evil-mode 1)
     (define-key evil-motion-state-map (kbd "RET") nil)
+    (evil-define-key 'normal evil-jumper-mod-map (kbd "TAB") nil)
     (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
 
