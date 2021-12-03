@@ -4,30 +4,30 @@
 :END:
 
 :CONTENTS:
-- [[Package Management][Package Management]]
-- [[UI][UI]]
-  - [[Basic Windows Configuration][Basic Windows Configuration]]
-  - [[Theme][Theme]]
-  - [[Modeline][Modeline]]
-- [[Org Mode][Org Mode]]
-  - [[Org][Org]]
-  - [[Org Agenda][Org Agenda]]
-  - [[Org Babel][Org Babel]]
-  - [[Latex][Latex]]
-  - [[reStructuredText][reStructuredText]]
-  - [[Bibliography references][Bibliography references]]
-- [[Programming][Programming]]
-  - [[Magit][Magit]]
-  - [[Clojure][Clojure]]
-  - [[IDE experience][IDE experience]]
-    - [[Isolate libraries in environment][Isolate libraries in environment]]
-    - [[LSP mode][LSP mode]]
-    - [[C mode][C mode]]
-- [[Search and completion][Search and completion]]
-- [[Other Tools][Other Tools]]
-  - [[Which key][Which key]]
-  - [[Evil Mode (Vim keybindings)][Evil Mode (Vim keybindings)]]
-- [[Automatic TOC creation package][Automatic TOC creation package]]
+- [[#package-management][Package Management]]
+- [[#ui][UI]]
+  - [[#basic-windows-configuration][Basic Windows Configuration]]
+  - [[#theme][Theme]]
+  - [[#modeline][Modeline]]
+- [[#org-mode][Org Mode]]
+  - [[#org][Org]]
+  - [[#org-agenda][Org Agenda]]
+  - [[#org-babel][Org Babel]]
+  - [[#latex][Latex]]
+  - [[#restructuredtext][reStructuredText]]
+  - [[#bibliography-references][Bibliography references]]
+- [[#programming][Programming]]
+  - [[#magit][Magit]]
+  - [[#clojure][Clojure]]
+  - [[#ide-experience][IDE experience]]
+    - [[#isolate-libraries-in-environment][Isolate libraries in environment]]
+    - [[#lsp-mode][LSP mode]]
+    - [[#c-mode][C mode]]
+- [[#search-and-completion][Search and completion]]
+- [[#other-tools][Other Tools]]
+  - [[#which-key][Which key]]
+  - [[#evil-mode-vim-keybindings][Evil Mode (Vim keybindings)]]
+- [[#automatic-toc-creation-package][Automatic TOC creation package]]
 :END:
 
 
@@ -296,5 +296,5 @@ This package allows to automatically update the *TOC* on save.
   (use-package org-make-toc
     :hook (org-mode . org-make-toc-mode)
     :custom
-    (org-make-toc-link-type-fn #'org-make-toc--link-entry-org))
+    (org-make-toc-link-type-fn #'org-make-toc--link-entry-github))
 #+end_src
