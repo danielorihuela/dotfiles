@@ -74,9 +74,9 @@ Install =use-package= and load it. This package is used to manage package config
 ** Theme
 
 #+begin_src emacs-lisp
-  (use-package color-theme-sanityinc-tomorrow
+  (use-package flatland-theme
     :config
-    (load-theme 'sanityinc-tomorrow-eighties t))
+    (load-theme 'flatland t))
 #+end_src
 
 ** Modeline
