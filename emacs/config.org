@@ -114,26 +114,15 @@ Load the org package and configure it.
     :config
     (setq org-todo-keywords
           '((sequence "TODO" "NEXT" "HOLD" "|" "CANCELLED" "DONE")))
-    (setq org-todo-keyword-faces
-          '(("TODO" :foreground "#FF2C6D" :weight bold)
-            ("NEXT" :foreground "#45A9F9" :weight bold)
-            ("HOLD" :foreground "#FFFF5C" :weight bold)
-            ("CANCELLED" :foreground "#19f9d8" :weight bold)
-            ("DONE" :foreground "#19f9d8" :weight bold)))
     (setq org-agenda-files '("~/Desktop/emacs"))
-    (setq org-return-follows-link t)
-    (plist-put org-format-latex-options :scale 2.0)
-    :bind (:map org-mode-map
-                ("C-c p" . org-latex-export-to-pdf)))
+    (plist-put org-format-latex-options :scale 2.0))
 #+end_src
 
 ** Org Agenda
 
 #+begin_src emacs-lisp
   (with-eval-after-load 'org
-    (add-hook 'after-init-hook 'org-agenda-list)
-    (setq org-agenda-span 31)
-    (setq org-agenda-window-setup 'only-window))
+    (setq org-agenda-span 14))
 #+end_src
 
 ** Org Babel
