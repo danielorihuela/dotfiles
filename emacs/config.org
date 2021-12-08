@@ -9,21 +9,15 @@
   - [[#basic-windows-configuration][Basic Windows Configuration]]
   - [[#theme][Theme]]
   - [[#modeline][Modeline]]
+- [[#search-and-completion][Search and completion]]
 - [[#org-mode][Org Mode]]
   - [[#org][Org]]
-  - [[#org-agenda][Org Agenda]]
   - [[#org-babel][Org Babel]]
   - [[#latex][Latex]]
-  - [[#restructuredtext][reStructuredText]]
   - [[#bibliography-references][Bibliography references]]
 - [[#programming][Programming]]
   - [[#magit][Magit]]
   - [[#clojure][Clojure]]
-  - [[#ide-experience][IDE experience]]
-    - [[#isolate-libraries-in-environment][Isolate libraries in environment]]
-    - [[#lsp-mode][LSP mode]]
-    - [[#c-mode][C mode]]
-- [[#search-and-completion][Search and completion]]
 - [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
   - [[#evil-mode-vim-keybindings][Evil Mode (Vim keybindings)]]
@@ -94,6 +88,28 @@ The fonts will only be installed the first time, this is a [[https://github.com/
       (all-the-icons-install-fonts t)))
 #+end_src
 
+* Search and completion
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :bind (:map vertico-map
+                ("C-j" . vertico-next)
+                ("C-k" . vertico-previous)
+                :map minibuffer-local-map)
+    :custom
+    (vertico-cycle t)
+    :init (vertico-mode))
+
+  (use-package consult
+    :demand t
+    :bind (("C-s" . consult-line)))
+
+  (use-package marginalia
+    :after vertico
+    :init
+    (marginalia-mode))
+#+end_src
+
 * Org Mode
 
 ** Org
@@ -115,14 +131,7 @@ Load the org package and configure it.
     :config
     (setq org-todo-keywords
           '((sequence "TODO" "NEXT" "HOLD" "|" "CANCELLED" "DONE")))
-    (setq org-agenda-files '("~/Desktop/emacs"))
-    (plist-put org-format-latex-options :scale 2.0))
-#+end_src
-
-** Org Agenda
-
-#+begin_src emacs-lisp
-  (with-eval-after-load 'org
+    (setq org-agenda-files '("~/knowledge"))
     (setq org-agenda-span 14))
 #+end_src
 
@@ -150,15 +159,6 @@ Commands to export =org-mode= to *latex* and remove the intermediate generated f
             "pdflatex -interaction nonstopmode -output-directory %o %f"))
     (setq org-latex-logfiles-extensions
           (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "xmpi" "run.xml" "bcf" "acn" "acr" "alg" "glg" "gls" "ist"))))
-#+end_src
-
-** reStructuredText
-
-ox-rst is an export backend to generate rST files.
-
-#+begin_src emacs-lisp
-  (use-package ox-rst
-    :after org)
 #+end_src
 
 ** Bibliography references
@@ -192,61 +192,6 @@ Git client.
     :mode "\\.clj\\'")
   (use-package cider
     :after clojure-mode)
-#+end_src
-
-** IDE experience
-
-*** Isolate libraries in environment 
-
-The IDE experience requires libraries for the different languages and tools. We will use pyenv to isolate them and do not have compatiblity issues with our system.
-
-pyenv gives us the ability to select an environment with =pyvenv-workon=. In our case, we are using conda. By default, we will load the *emacs* environment.
-
-I based this on [[https://ddavis.io/posts/emacs-python-lsp/][ddavis post]], but changed pyenv for miniconda.
-
-#+begin_src emacs-lisp
-  (use-package pyvenv
-    :init
-    (setenv "WORKON_HOME" "~/miniconda3/envs"))
-
-  (with-eval-after-load 'pyvenv
-    (pyvenv-workon "emacs"))
-#+end_src
-
-*** LSP mode
-
-#+begin_src emacs-lisp
-  (use-package lsp-mode
-    :commands lsp)
-#+end_src
-
-*** C mode
-
-#+begin_src emacs-lisp
-  (setq-default c-basic-offset 4
-                tab-width 4
-                indent-tabs-mode t)
-#+end_src
-
-* Search and completion
-
-#+begin_src emacs-lisp
-  (use-package vertico
-    :init (vertico-mode))
-
-  (use-package corfu
-    :after vertico)
-
-  (use-package consult
-    :demand t
-    :bind (("C-s" . consult-line)))
-
-  (use-package marginalia
-    :after vertico
-    :custom
-    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-    :init
-    (marginalia-mode))
 #+end_src
 
 * Other Tools
@@ -283,9 +228,6 @@ Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped line
     :after evil
     :config
     (evil-collection-init))
-
-  ;;(with-eval-after-load 'evil-maps
-  ;;(define-key evil-motion-state-map (kbd "RET") nil))
 #+end_src
 
 * Automatic TOC creation package
