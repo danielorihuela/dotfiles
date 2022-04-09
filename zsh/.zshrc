@@ -9,7 +9,6 @@ setopt appendhistory
 alias sudo="sudo "
 alias update-system="sudo apt update && sudo apt upgrade && sudo apt autoremove && sudo apt purge && sudo apt clean && sudo journalctl --vacuum-time=100d"
 alias scurl="curl --tlsv1.2 --proto https"
-alias notes="export PATH=$PATH:/home/dani/Desktop/Side-Projects/grade_scraper/target/release/ && grade_scraper $argv"
 
 # starship
 eval "$(starship init zsh)"
