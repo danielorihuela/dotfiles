@@ -4,11 +4,13 @@ HISTSIZE=1000
 SAVEHIST=1000
 setopt appendhistory
 
-
 # aliases
+alias cat="batcat --pager=never"
+alias less="batcat --pager=\"less -RF\""
+alias ls="lsd"
+alias scurl="curl --tlsv1.2 --proto https"
 alias sudo="sudo "
 alias update-system="sudo apt update && sudo apt upgrade && sudo apt autoremove && sudo apt purge && sudo apt clean && sudo journalctl --vacuum-time=100d"
-alias scurl="curl --tlsv1.2 --proto https"
 
 # starship
 eval "$(starship init zsh)"

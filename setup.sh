@@ -8,15 +8,16 @@ CONFIG=$HOME/".config"
 source ./helper.sh
 
 # Install packages
-silent_install curl
-silent_install wget
-silent_install git
-silent_install flameshot
-silent_install firefox
-silent_install texlive-latex-extra  
 sudo add-apt-repository ppa:aslatter/ppa -y 1>/dev/null
 sudo apt-get update 1>/dev/null
 silent_install alacritty
+silent_install bat
+silent_install curl
+silent_install flameshot
+silent_install firefox
+silent_install git
+silent_install texlive-latex-extra
+silent_install wget
 
 silent_install zsh
 chsh -s $(which zsh)
