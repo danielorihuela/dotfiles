@@ -33,7 +33,6 @@ Install =use-package= and load it. This package is used to manage package config
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("org" . "https://orgmode.org/elpa/")
                            ("elpa" . "https://elpa.gnu.org/packages/")))
 
   (setq warning-suppress-log-types '((package reinitialization)))
@@ -131,7 +130,7 @@ Load the org package and configure it.
     :config
     (setq org-todo-keywords
           '((sequence "TODO" "NEXT" "HOLD" "|" "CANCELLED" "DONE")))
-    (setq org-agenda-files '("~/knowledge"))
+    (setq org-agenda-files (directory-files-recursively "~/knowledge/" "\\.org$"))
     (setq org-agenda-span 14))
 #+end_src
 
@@ -175,6 +174,23 @@ bibliography:ref.bib
     :after org)
 #+end_src
 
+* Second brain and blog
+
+** Org Roam
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :init
+    :custom
+    (org-roam-directory (file-truename "~/knowledge/brain"))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n i" . org-roam-node-insert))
+    :config
+    (org-roam-setup))
+#+end_src
+
+
 * Programming
 
 ** Magit
@@ -213,21 +229,40 @@ UI panel to show all the possible completions of a key binding. For example, if 
 Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped lines.
 
 #+begin_src emacs-lisp
-  (use-package evil
-    :init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
-    :config
-    (evil-mode 1)
-    (define-key evil-motion-state-map (kbd "RET") nil)
-    (evil-define-key 'normal evil-jumper-mod-map (kbd "TAB") nil)
-    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-    (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+  ;;(use-package evil
+    ;;:init
+    ;;(setq evil-want-integration t)
+    ;;(setq evil-want-keybinding nil)
+    ;;:config
+    ;;(evil-mode 1)
+    ;;(define-key evil-motion-state-map (kbd "RET") nil)
+    ;;(evil-define-key 'normal evil-jumper-mod-map (kbd "TAB") nil)
+    ;;(evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    ;;(evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+;;
+  ;;(use-package evil-collection
+    ;;:after evil
+    ;;:config
+    ;;(evil-collection-init))
+#+end_src
 
-  (use-package evil-collection
-    :after evil
+** God mode
+
+#+begin_src emacs-lisp
+(defun update-cursor-type ()
+  (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
+
+  (use-package god-mode
+    :init
+    (add-hook 'post-command-hook #'update-cursor-type)
     :config
-    (evil-collection-init))
+    (global-set-key (kbd "<escape>") #'god-local-mode)
+    (define-key god-local-mode-map (kbd "i") #'god-local-mode)
+    (define-key god-local-mode-map (kbd ".") #'repeat)
+    (global-set-key (kbd "C-x C-1") #'delete-other-windows)
+    (global-set-key (kbd "C-x C-2") #'split-window-below)
+    (global-set-key (kbd "C-x C-3") #'split-window-right)
+    (global-set-key (kbd "C-x C-0") #'delete-window))
 #+end_src
 
 * Automatic TOC creation package
