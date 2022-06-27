@@ -1,9 +1,4 @@
-* Table of Contents
-:PROPERTIES:
-:TOC:      :include all :depth 5 :force (depth) :ignore (this) :local (depth)
-:END:
-
-:CONTENTS:
+* Table of Contents                                                :TOC_5_gh:
 - [[#package-management][Package Management]]
 - [[#ui][UI]]
   - [[#basic-windows-configuration][Basic Windows Configuration]]
@@ -15,15 +10,16 @@
   - [[#org-babel][Org Babel]]
   - [[#latex][Latex]]
   - [[#bibliography-references][Bibliography references]]
+- [[#second-brain-and-blog][Second brain and blog]]
+  - [[#org-roam][Org Roam]]
 - [[#programming][Programming]]
   - [[#magit][Magit]]
   - [[#clojure][Clojure]]
 - [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
   - [[#evil-mode-vim-keybindings][Evil Mode (Vim keybindings)]]
+  - [[#god-mode][God mode]]
 - [[#automatic-toc-creation-package][Automatic TOC creation package]]
-:END:
-
 
 * Package Management
 
@@ -270,8 +266,13 @@ Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped line
 This package allows to automatically update the *TOC* on save.
 
 #+begin_src emacs-lisp
-  (use-package org-make-toc
-    :hook (org-mode . org-make-toc-mode)
-    :custom
-    (org-make-toc-link-type-fn #'org-make-toc--link-entry-github))
+  ;;(use-package org-make-toc
+    ;;:hook (org-mode . org-make-toc-mode)
+    ;;:custom
+    ;;(org-make-toc-link-type-fn #'org-make-toc--link-entry-org))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package toc-org
+    :hook (org-mode . toc-org-mode))
 #+end_src
