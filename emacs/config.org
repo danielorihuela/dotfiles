@@ -138,7 +138,8 @@ Load the org package and configure it.
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((python . t)
-       (shell . t))))
+       (shell . t)
+       (ditaa . t))))
 #+end_src
 
 ** Latex
