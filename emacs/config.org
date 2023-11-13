@@ -1,25 +1,46 @@
 * Table of Contents                                                :TOC_5_gh:
+- [[#notes][Notes]]
+- [[#basic-windows-configuration][Basic Windows Configuration]]
 - [[#package-management][Package Management]]
+- [[#garbage-collector-optimization][Garbage Collector optimization]]
 - [[#ui][UI]]
-  - [[#basic-windows-configuration][Basic Windows Configuration]]
   - [[#theme][Theme]]
   - [[#modeline][Modeline]]
 - [[#search-and-completion][Search and completion]]
 - [[#org-mode][Org Mode]]
   - [[#org][Org]]
   - [[#org-babel][Org Babel]]
-  - [[#latex][Latex]]
-  - [[#bibliography-references][Bibliography references]]
-- [[#second-brain-and-blog][Second brain and blog]]
-  - [[#org-roam][Org Roam]]
+  - [[#writing-research-in-latex][Writing Research in LaTeX]]
+  - [[#table-of-contents][Table Of Contents]]
 - [[#programming][Programming]]
   - [[#magit][Magit]]
   - [[#clojure][Clojure]]
 - [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
-  - [[#evil-mode-vim-keybindings][Evil Mode (Vim keybindings)]]
   - [[#god-mode][God mode]]
-- [[#automatic-toc-creation-package][Automatic TOC creation package]]
+
+* Notes
+
+Drawer with the property ":tangle no" avoids exporting all the source code
+blocks of the tree. I use it to "disable" tools that I used for a specific
+purpose and that I'm no longer using.
+
+* Basic Windows Configuration
+
+- Disable the splash screen
+- Disable some UI elements
+- Display the line number
+- Set fontsize to 18.
+
+#+begin_src emacs-lisp
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (tooltip-mode -1)
+  (menu-bar-mode -1)
+  (column-number-mode)
+  (set-face-attribute 'default nil :height 180)
+  (toggle-frame-maximized)
+#+end_src
 
 * Package Management
 
@@ -31,72 +52,53 @@ Install =use-package= and load it. This package is used to manage package config
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                            ("elpa" . "https://elpa.gnu.org/packages/")))
 
-  (setq warning-suppress-log-types '((package reinitialization)))
   (package-initialize)
   (unless package-archive-contents (package-refresh-contents))
-
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
   (require 'use-package)
   (setq use-package-always-ensure t)
 #+end_src
 
-* UI
+* Garbage Collector optimization
 
-** Basic Windows Configuration
-
-- Disable the splash screen
-- Disable some UI elements
-- Display the line number
-- Set fontsize to 18.
+Optimize garbage collector as doom emacs. Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394024fe6f164/lisp/doom-start.el#L90.
 
 #+begin_src emacs-lisp
-  (setq inhibit-splash-screen t)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (tooltip-mode -1)
-  (menu-bar-mode -1)
-  (column-number-mode)
-  (set-face-attribute 'default nil :height 180)
+  (use-package gcmh)
+  (setq gcmh-idle-delay 'auto  ; default is 15s
+        gcmh-auto-idle-delay-factor 10
+        gcmh-high-cons-threshold (* 16 1024 1024))  ; 16mb
+  (add-hook 'doom-first-buffer-hook #'gcmh-mode)
 #+end_src
+
+* UI
 
 ** Theme
 
 #+begin_src emacs-lisp
-  (use-package flatland-theme
-    :config
-    (load-theme 'flatland t))
+;;  (use-package flatland-theme
+;;    :config
+;;    (load-theme 'flatland t))
 #+end_src
 
 ** Modeline
 
-Install the doom modeline along with the required icons and fonts.
-The fonts will only be installed the first time, this is a [[https://github.com/domtronn/all-the-icons.el/issues/120][workaround]].
-
 #+begin_src emacs-lisp
-  (use-package all-the-icons)
-
+  (use-package nerd-icons)
   (use-package doom-modeline
-    :ensure t
-    :init (doom-modeline-mode 1)
-    (unless (member "all-the-icons" (font-family-list))
-      (all-the-icons-install-fonts t)))
+    :init (doom-modeline-mode 1))
 #+end_src
 
 * Search and completion
 
 #+begin_src emacs-lisp
   (use-package vertico
-    :bind (:map vertico-map
-                ("C-j" . vertico-next)
-                ("C-k" . vertico-previous)
-                :map minibuffer-local-map)
     :custom
     (vertico-cycle t)
     :init (vertico-mode))
 
   (use-package consult
-    :demand t
     :bind (("C-s" . consult-line)))
 
   (use-package marginalia
@@ -142,57 +144,54 @@ Load the org package and configure it.
        (ditaa . t))))
 #+end_src
 
-** Latex
+** Writing Research in LaTeX
+:properties:
+:header-args: :tangle no
+:end:
 
-Commands to export =org-mode= to *latex* and remove the intermediate generated files.
+We can export =org-mode= to =LaTeX=, the markup language used by some
+PhDs and students (at least in the computer science field) to write
+their thesis and researchs.
+
+The export outputs a lot of intermediate files, but we can remove them.
 
 #+begin_src emacs-lisp
   (with-eval-after-load 'org
-    (setq org-latex-pdf-process
-          '("pdflatex -interaction nonstopmode -output-directory %o %f"
-            "bibtex %b"
-            "pdflatex -interaction nonstopmode -output-directory %o %f"
-            "pdflatex -interaction nonstopmode -output-directory %o %f"))
     (setq org-latex-logfiles-extensions
-          (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "xmpi" "run.xml" "bcf" "acn" "acr" "alg" "glg" "gls" "ist"))))
+          (quote ("aux" "bbl" "blg" "fdb_latexmk" "fls" "out" "toc" "lof" "tex"))))
 #+end_src
 
-** Bibliography references
+We can handle citations with =org-ref=. We can insert citations from a
+[[https://es.overleaf.com/learn/latex/Bibliography_management_with_bibtex][.bib]] file using =org-ref-insert-link=.
 
-This package will handle the references for us. We only need to create a reference file (e.g. ref.bib). Then, to show the bibliography add the following lines to your org file.
+#+begin_src emacs-lisp
+  (use-package org-ref
+    :disabled
+    :after org)
+#+end_src
+
+To show the bibliography, add the following to your org file.
 
 #+begin_example
 bibliographystyle:ieeetr
 bibliography:ref.bib
 #+end_example
 
-#+begin_src emacs-lisp
-  (use-package org-ref
-    :after org)
-#+end_src
+** Table Of Contents
 
-* Second brain and blog
-
-** Org Roam
+Automatically create and update a TOC. Create a headline
+and add the tag ~:TOC_2:~ with =org-set-tags-command=, where
+the number indicates the depth.
 
 #+begin_src emacs-lisp
-  (use-package org-roam
-    :init
-    :custom
-    (org-roam-directory (file-truename "~/knowledge/brain"))
-    :bind (("C-c n l" . org-roam-buffer-toggle)
-           ("C-c n f" . org-roam-node-find)
-           ("C-c n i" . org-roam-node-insert))
-    :config
-    (org-roam-setup))
+  (use-package toc-org
+    :hook (org-mode . toc-org-mode))
 #+end_src
 
 
 * Programming
 
 ** Magit
-
-Git client.
 
 #+begin_src emacs-lisp
   (use-package magit)
@@ -221,28 +220,6 @@ UI panel to show all the possible completions of a key binding. For example, if 
     (setq which-key-idle-delay 1))
 #+end_src
 
-** Evil Mode (Vim keybindings)
-
-Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped lines.
-
-#+begin_src emacs-lisp
-  ;;(use-package evil
-  ;;:init
-  ;;(setq evil-want-integration t)
-  ;;(setq evil-want-keybinding nil)
-  ;;:config
-  ;;(evil-mode 1)
-  ;;(define-key evil-motion-state-map (kbd "RET") nil)
-  ;;(evil-define-key 'normal evil-jumper-mod-map (kbd "TAB") nil)
-  ;;(evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  ;;(evil-global-set-key 'motion "k" 'evil-previous-visual-line))
-  ;;
-  ;;(use-package evil-collection
-  ;;:after evil
-  ;;:config
-  ;;(evil-collection-init))
-#+end_src
-
 ** God mode
 
 #+begin_src emacs-lisp
@@ -260,20 +237,4 @@ Enable vim modal key bindings. Modify *j* and *k* motion to work on wrapped line
     (global-set-key (kbd "C-x C-2") #'split-window-below)
     (global-set-key (kbd "C-x C-3") #'split-window-right)
     (global-set-key (kbd "C-x C-0") #'delete-window))
-#+end_src
-
-* Automatic TOC creation package
-
-This package allows to automatically update the *TOC* on save.
-
-#+begin_src emacs-lisp
-  ;;(use-package org-make-toc
-  ;;:hook (org-mode . org-make-toc-mode)
-  ;;:custom
-  ;;(org-make-toc-link-type-fn #'org-make-toc--link-entry-org))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package toc-org
-    :hook (org-mode . toc-org-mode))
 #+end_src
