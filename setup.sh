@@ -33,6 +33,7 @@ ln -sf $DOTFILES/startship/starship.toml $CONFIG
 show_configure_message emacs
 mkdir -p $CONFIG/emacs
 ln -sf $DOTFILES/emacs/init.el $HOME/.emacs.d/
+ln -sf $DOTFILES/emacs/early-init.el $HOME/.emacs.d/
 
 show_configure_message alacritty
 ln -sf $DOTFILES/alacritty/alacritty.yml $CONFIG

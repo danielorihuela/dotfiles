@@ -1,10 +1,11 @@
+# -*- after-save-hook: (org-babel-tangle) -*-
+#+property: header-args:emacs-lisp :exports code :results none :tangle init.el
+
 * Table of Contents                                                :TOC_5_gh:
 - [[#notes][Notes]]
-- [[#basic-windows-configuration][Basic Windows Configuration]]
 - [[#package-management][Package Management]]
 - [[#garbage-collector-optimization][Garbage Collector optimization]]
 - [[#ui][UI]]
-  - [[#theme][Theme]]
   - [[#modeline][Modeline]]
 - [[#search-and-completion][Search and completion]]
 - [[#org-mode][Org Mode]]
@@ -17,7 +18,7 @@
   - [[#clojure][Clojure]]
 - [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
-  - [[#god-mode][God mode]]
+  - [[#evil-mode][Evil mode]]
 
 * Notes
 
@@ -25,39 +26,30 @@ Drawer with the property ":tangle no" avoids exporting all the source code
 blocks of the tree. I use it to "disable" tools that I used for a specific
 purpose and that I'm no longer using.
 
-* Basic Windows Configuration
-
-- Disable the splash screen
-- Disable some UI elements
-- Display the line number
-- Set fontsize to 18.
-
-#+begin_src emacs-lisp
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (tooltip-mode -1)
-  (menu-bar-mode -1)
-  (column-number-mode)
-  (set-face-attribute 'default nil :height 180)
-  (toggle-frame-maximized)
-#+end_src
-
 * Package Management
 
-Load =package=, set up the repositories and initialize the package system.
-Install =use-package= and load it. This package is used to manage package configuration.
+Install =straight.el= and =use-package= to manage package configuration.
+The first startup will take a long time. Relax, =straight.el= is cloning
+all the repositories. Just wait.
 
 #+begin_src emacs-lisp
-  (require 'package)
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("elpa" . "https://elpa.gnu.org/packages/")))
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
 
-  (package-initialize)
-  (unless package-archive-contents (package-refresh-contents))
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
-  (require 'use-package)
-  (setq use-package-always-ensure t)
+  (straight-use-package 'use-package)
+
+  (setq straight-use-package-by-default t)
+  (setq straight-check-for-modifications nil)
 #+end_src
 
 * Garbage Collector optimization
@@ -66,21 +58,12 @@ Optimize garbage collector as doom emacs. Check https://github.com/doomemacs/doo
 
 #+begin_src emacs-lisp
   (use-package gcmh)
-  (setq gcmh-idle-delay 'auto  ; default is 15s
+  (setq gcmh-idle-delay 'auto
         gcmh-auto-idle-delay-factor 10
-        gcmh-high-cons-threshold (* 16 1024 1024))  ; 16mb
-  (add-hook 'doom-first-buffer-hook #'gcmh-mode)
+        gcmh-high-cons-threshold (* 16 1024 1024))
 #+end_src
 
 * UI
-
-** Theme
-
-#+begin_src emacs-lisp
-;;  (use-package flatland-theme
-;;    :config
-;;    (load-theme 'flatland t))
-#+end_src
 
 ** Modeline
 
@@ -122,12 +105,13 @@ Load the org package and configure it.
     (visual-line-mode 1))
 
   (use-package org
+    :straight (:type built-in)
     :hook
     ((org-mode . do/org-setup)
      (org-agenda-mode . org-agenda-entry-text-mode))
     :config
     (setq org-todo-keywords
-          '((sequence "TODO" "NEXT" "HOLD" "|" "CANCELLED" "DONE")))
+          '((sequence "TODO" "DOING" "HOLD" "|" "CANCELLED" "DONE")))
     (setq org-agenda-files (directory-files-recursively "~/knowledge/" "\\.org$"))
     (setq org-agenda-span 14))
 #+end_src
@@ -194,7 +178,8 @@ the number indicates the depth.
 ** Magit
 
 #+begin_src emacs-lisp
-  (use-package magit)
+  (use-package magit
+    :bind ("C-x g" . magit-status))
 #+end_src
 
 ** Clojure
@@ -220,21 +205,20 @@ UI panel to show all the possible completions of a key binding. For example, if 
     (setq which-key-idle-delay 1))
 #+end_src
 
-** God mode
+** Evil mode
 
 #+begin_src emacs-lisp
-  (defun update-cursor-type ()
-    (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
-
-  (use-package god-mode
+  (use-package evil
     :init
-    (add-hook 'post-command-hook #'update-cursor-type)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-c-i-jump nil)
+    :config (evil-mode 1))
+
+  (use-package evil-collection
+    :after evil
     :config
-    (global-set-key (kbd "<escape>") #'god-local-mode)
-    (define-key god-local-mode-map (kbd "i") #'god-local-mode)
-    (define-key god-local-mode-map (kbd ".") #'repeat)
-    (global-set-key (kbd "C-x C-1") #'delete-other-windows)
-    (global-set-key (kbd "C-x C-2") #'split-window-below)
-    (global-set-key (kbd "C-x C-3") #'split-window-right)
-    (global-set-key (kbd "C-x C-0") #'delete-window))
+    (setq evil-want-integration t)
+    (evil-collection-init)
+    :custom
+    (evil-collection-setup-minibuffer t))
 #+end_src
