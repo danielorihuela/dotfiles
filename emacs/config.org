@@ -13,12 +13,12 @@
   - [[#org-babel][Org Babel]]
   - [[#writing-research-in-latex][Writing Research in LaTeX]]
   - [[#table-of-contents][Table Of Contents]]
-- [[#programming][Programming]]
-  - [[#magit][Magit]]
-  - [[#clojure][Clojure]]
 - [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
   - [[#evil-mode][Evil mode]]
+- [[#programming][Programming]]
+  - [[#magit][Magit]]
+  - [[#rust][Rust]]
 
 * Notes
 
@@ -75,6 +75,11 @@ Optimize garbage collector as doom emacs. Check https://github.com/doomemacs/doo
 
 * Search and completion
 
+- Vertico    -> Show command completions as I type
+- Consult    -> Provides search and navigation commands
+- Marginalia -> Adds annotations
+- Corfu      -> Adds autocompletion
+
 #+begin_src emacs-lisp
   (use-package vertico
     :custom
@@ -88,6 +93,11 @@ Optimize garbage collector as doom emacs. Check https://github.com/doomemacs/doo
     :after vertico
     :init
     (marginalia-mode))
+
+  (use-package corfu
+    :init (global-corfu-mode)
+    :custom
+    (corfu-auto t))
 #+end_src
 
 * Org Mode
@@ -119,8 +129,12 @@ Load the org package and configure it.
 ** Org Babel
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'org
+  (use-package ob
+    :straight (:type built-in)
+    :after org
+    :init
     (setq org-babel-python-command "python3")
+    :config
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((python . t)
@@ -172,25 +186,6 @@ the number indicates the depth.
     :hook (org-mode . toc-org-mode))
 #+end_src
 
-
-* Programming
-
-** Magit
-
-#+begin_src emacs-lisp
-  (use-package magit
-    :bind ("C-x g" . magit-status))
-#+end_src
-
-** Clojure
-
-#+begin_src emacs-lisp
-  (use-package clojure-mode
-    :mode "\\.clj\\'")
-  (use-package cider
-    :after clojure-mode)
-#+end_src
-
 * Other Tools
 
 ** Which key
@@ -221,4 +216,20 @@ UI panel to show all the possible completions of a key binding. For example, if 
     (evil-collection-init)
     :custom
     (evil-collection-setup-minibuffer t))
+#+end_src
+
+* Programming
+
+** Magit
+
+#+begin_src emacs-lisp
+  (use-package magit)
+#+end_src
+
+** Rust
+
+#+begin_src emacs-lisp
+  (use-package rust-ts-mode
+    :mode "\\.rs\\'"
+    :hook (rust-ts-mode . eglot-ensure))
 #+end_src

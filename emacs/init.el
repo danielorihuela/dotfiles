@@ -38,6 +38,11 @@
   :init
   (marginalia-mode))
 
+(use-package corfu
+  :init (global-corfu-mode)
+  :custom
+  (corfu-auto t))
+
 (defun do/org-setup ()
   (org-indent-mode)
   (visual-line-mode 1))
@@ -53,8 +58,12 @@
   (setq org-agenda-files (directory-files-recursively "~/knowledge/" "\\.org$"))
   (setq org-agenda-span 14))
 
-(with-eval-after-load 'org
+(use-package ob
+  :straight (:type built-in)
+  :after org
+  :init 
   (setq org-babel-python-command "python3")
+  :config
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t)
@@ -71,14 +80,6 @@
 
 (use-package toc-org
   :hook (org-mode . toc-org-mode))
-
-(use-package magit
-  :bind ("C-x g" . magit-status))
-
-(use-package clojure-mode
-  :mode "\\.clj\\'")
-(use-package cider
-  :after clojure-mode)
 
 (use-package which-key
   :init (which-key-mode)
@@ -99,3 +100,9 @@
   (evil-collection-init)
   :custom
   (evil-collection-setup-minibuffer t))
+
+(use-package magit)
+
+(use-package rust-ts-mode
+  :mode "\\.rs\\'"
+  :hook (rust-ts-mode . eglot))
