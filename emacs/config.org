@@ -233,3 +233,18 @@ UI panel to show all the possible completions of a key binding. For example, if 
     :mode "\\.rs\\'"
     :hook (rust-ts-mode . eglot-ensure))
 #+end_src
+
+Eglot uses =project.el=, which by default detects git-controlled directories.
+When I tried to open a rust project inside a git repository like =aoc/2023/puzzle-01=,
+=project.el= detected =aoc= as the root of the project instead of =puzzle-01=.
+In that situation, eglot failed to start, of course.
+
+The following snippet solves that. =project.el= will now take into account
+=Cargo.toml= files to search for the root of the projects.
+
+#+begin_src emacs-lisp
+  (use-package project
+    :straight (:type built-in)
+    :init
+    (setq project-vc-extra-root-markers '("Cargo.toml")))
+  #+end_src
