@@ -61,7 +61,7 @@
 (use-package ob
   :straight (:type built-in)
   :after org
-  :init 
+  :init
   (setq org-babel-python-command "python3")
   :config
   (org-babel-do-load-languages
@@ -105,4 +105,9 @@
 
 (use-package rust-ts-mode
   :mode "\\.rs\\'"
-  :hook (rust-ts-mode . eglot))
+  :hook (rust-ts-mode . eglot-ensure))
+
+(use-package project
+  :straight (:type built-in)
+  :init
+  (setq project-vc-extra-root-markers '("Cargo.toml")))
