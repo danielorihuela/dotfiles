@@ -6,6 +6,7 @@
 - [[#package-management][Package Management]]
 - [[#garbage-collector-optimization][Garbage Collector optimization]]
 - [[#ui][UI]]
+  - [[#theme][Theme]]
   - [[#modeline][Modeline]]
 - [[#auto-save-files][Auto save files]]
 - [[#search-and-completion][Search and completion]]
@@ -65,6 +66,13 @@ Optimize garbage collector as doom emacs. Check https://github.com/doomemacs/doo
 #+end_src
 
 * UI
+
+** Theme
+
+#+begin_src emacs-lisp
+  (use-package monokai-theme)
+  (load-theme 'monokai t)
+#+end_src
 
 ** Modeline
 
