@@ -25,6 +25,9 @@
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
 
+(make-directory "~/.emacs.d/autosaves/" t)
+(setq backup-directory-alist '((".*" . "~/.emacs.d/autosaves")))
+
 (use-package vertico
   :custom
   (vertico-cycle t)

@@ -7,6 +7,7 @@
 - [[#garbage-collector-optimization][Garbage Collector optimization]]
 - [[#ui][UI]]
   - [[#modeline][Modeline]]
+- [[#auto-save-files][Auto save files]]
 - [[#search-and-completion][Search and completion]]
 - [[#org-mode][Org Mode]]
   - [[#org][Org]]
@@ -71,6 +72,13 @@ Optimize garbage collector as doom emacs. Check https://github.com/doomemacs/doo
   (use-package nerd-icons)
   (use-package doom-modeline
     :init (doom-modeline-mode 1))
+#+end_src
+
+* Auto save files
+
+#+begin_src emacs-lisp
+(make-directory "~/.emacs.d/autosaves/" t)
+(setq backup-directory-alist '((".*" . "~/.emacs.d/autosaves")))
 #+end_src
 
 * Search and completion
