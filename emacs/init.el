@@ -64,6 +64,11 @@
   (setq org-agenda-files (directory-files-recursively "~/knowledge/" "\\.org$"))
   (setq org-agenda-span 14))
 
+(use-package org-bullets
+  :after org
+  :hook
+  (org-mode . (lambda () (org-bullets-mode 1))))
+
 (use-package ob
   :straight (:type built-in)
   :after org
@@ -117,3 +122,7 @@
   :straight (:type built-in)
   :init
   (setq project-vc-extra-root-markers '("Cargo.toml")))
+
+(use-package treemacs)
+(use-package treemacs-evil
+  :after treemacs)

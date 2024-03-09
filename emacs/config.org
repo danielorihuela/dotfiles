@@ -18,9 +18,10 @@
 - [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
   - [[#evil-mode][Evil mode]]
-- [[#programming][Programming]]
+- [[#ide][IDE]]
   - [[#magit][Magit]]
   - [[#rust][Rust]]
+  - [[#tree-navigation][Tree navigation]]
 
 * Notes
 
@@ -140,6 +141,11 @@ Load the org package and configure it.
           '((sequence "TODO" "DOING" "HOLD" "|" "CANCELLED" "DONE")))
     (setq org-agenda-files (directory-files-recursively "~/knowledge/" "\\.org$"))
     (setq org-agenda-span 14))
+
+  (use-package org-bullets
+    :after org
+    :hook
+    (org-mode . (lambda () (org-bullets-mode 1))))
 #+end_src
 
 ** Org Babel
@@ -234,7 +240,7 @@ UI panel to show all the possible completions of a key binding. For example, if 
     (evil-collection-setup-minibuffer t))
 #+end_src
 
-* Programming
+* IDE
 
 ** Magit
 
@@ -263,4 +269,12 @@ The following snippet solves that. =project.el= will now take into account
     :straight (:type built-in)
     :init
     (setq project-vc-extra-root-markers '("Cargo.toml")))
-  #+end_src
+#+end_src
+
+** Tree navigation
+
+#+begin_src emacs-lisp
+  (use-package treemacs)
+  (use-package treemacs-evil
+    :after treemacs)
+#+end_src
