@@ -57,7 +57,8 @@ all the repositories. Just wait.
 
 * Garbage Collector optimization
 
-Optimize garbage collector as doom emacs. Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394024fe6f164/lisp/doom-start.el#L90.
+Optimize garbage collector as doom emacs.
+Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394024fe6f164/lisp/doom-start.el#L90.
 
 #+begin_src emacs-lisp
   (use-package gcmh)
@@ -71,8 +72,12 @@ Optimize garbage collector as doom emacs. Check https://github.com/doomemacs/doo
 ** Theme
 
 #+begin_src emacs-lisp
-  (use-package monokai-theme)
-  (load-theme 'monokai t)
+  (use-package doom-themes
+    :straight t
+    :config
+    (load-theme 'doom-dracula t)
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
 #+end_src
 
 ** Modeline

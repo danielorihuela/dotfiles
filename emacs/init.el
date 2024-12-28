@@ -21,8 +21,12 @@
       gcmh-auto-idle-delay-factor 10
       gcmh-high-cons-threshold (* 16 1024 1024))
 
-(use-package monokai-theme)
-(load-theme 'monokai t)
+(use-package doom-themes
+  :straight t
+  :config
+  (load-theme 'doom-dracula t)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 (use-package nerd-icons)
 (use-package doom-modeline
