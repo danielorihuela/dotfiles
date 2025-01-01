@@ -1,41 +1,52 @@
 #!/bin/bash
 
-# Constants
-DOTFILES=$PWD
-CONFIG=$HOME/".config"
+source utils.sh
 
-# Import helper functions
-source ./helper.sh
+if [[ -z $(which apt-get) ]]; then
+    echo "APT package manager not installed"
+    exit 1;
+fi
 
-# Install packages
-sudo add-apt-repository ppa:aslatter/ppa -y 1>/dev/null
+print_title "INSTALL SCRIPT REQUIREMENTS"
+install_apt curl
+install_apt gpg
+install_apt stow
+
+print_title "ADDING APT REPOSITORIES"
+echo "Adding wezterm apt repository..."
+curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /etc/apt/keyrings/wezterm-fury.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list > /dev/null
+echo "Adding eza apt repository..."
+curl -fsSL https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --yes --dearmor -o /etc/apt/keyrings/gierens.gpg
+echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list > /dev/null
 sudo apt-get update 1>/dev/null
-silent_install alacritty
-silent_install bat
-silent_install curl
-silent_install flameshot
-silent_install firefox
-silent_install git
-silent_install texlive-latex-extra
-silent_install wget
 
-silent_install zsh
-chsh -s $(which zsh)
 
-# Configure the environment
-show_configure_message zsh
-ln -sf $DOTFILES/zsh/.zshrc $HOME
+print_title "INSTALL PACKAGES"
+packages=(wget git bat ripgrep eza wezterm zsh firefox flameshot)
+for package in ${packages[@]}; do
+    install_apt $package
+done
 
-show_configure_message starship
-sh -c "$(curl -fsSL https://starship.rs/install.sh)"
-ln -sf $DOTFILES/startship/starship.toml $CONFIG
+# APT doesn't contain starship
+echo "Installing \`starship\`..."
+curl -fsSL https://starship.rs/install.sh | sudo sh -s -- -y 1>/dev/null
+install_font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraCode.zip FiraCode
 
-show_configure_message emacs
-mkdir -p $CONFIG/emacs
-ln -sf $DOTFILES/emacs/init.el $HOME/.emacs.d/
-ln -sf $DOTFILES/emacs/early-init.el $HOME/.emacs.d/
+# APT doesn't contain nushell
+install_rust_github_release "nushell" "https://github.com/nushell/nushell" nu
 
-show_configure_message alacritty
-ln -sf $DOTFILES/alacritty/alacritty.yml $CONFIG
+print_title "SET NUSHELL AS DEFAULT SHELL"
+nu_shell=$(which nu)
+if [[ -z $(cat /etc/shells | grep $nu_shell) ]]; then
+    echo $nu_shell | sudo tee -a /etc/shells
+fi
+chsh -s $nu_shell
 
-echo -e "\n\nConfiguration ended. some changes will not take effect until the next time you log in."
+print_title "CONFIGURE STARSHIP"
+mkdir ~/.cache/starship
+starship init nu > ~/.cache/starship/init.nu
+
+print_title "SYMLINK CONFIGURATIONS"
+echo "Symlinking configurations..."
+stow -t $HOME */
