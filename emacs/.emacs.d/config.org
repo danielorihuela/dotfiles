@@ -10,6 +10,7 @@
   - [[#modeline][Modeline]]
 - [[#auto-save-files][Auto save files]]
 - [[#search-and-completion][Search and completion]]
+- [[#file-manager][File Manager]]
 - [[#org-mode][Org Mode]]
   - [[#org][Org]]
   - [[#org-babel][Org Babel]]
@@ -128,6 +129,21 @@ Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394
     :custom
     (completion-styles '(orderless basic))
     (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
+* File Manager
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons)
+  (use-package dirvish
+    :after evil
+    :init
+    (dirvish-override-dired-mode)
+    ;;:bind
+    ;;(:map dirvish-mode-map
+    ;;("g TAB" . dirvish-subtree-toggle)))
+    :config
+    (evil-define-key 'normal dirvish-mode-map (kbd "TAB") 'dirvish-subtree-toggle))
 #+end_src
 
 * Org Mode

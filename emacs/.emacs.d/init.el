@@ -59,6 +59,18 @@
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package all-the-icons)
+(use-package dirvish
+  :after evil
+  :init
+  (dirvish-override-dired-mode)
+  ;;:bind
+  ;;(:map dirvish-mode-map
+  ;;("g TAB" . dirvish-subtree-toggle)))
+  :config
+  (evil-define-key 'normal dirvish-mode-map (kbd "TAB") 'dirvish-subtree-toggle))
+
 (defun do/org-setup ()
   (org-indent-mode)
   (visual-line-mode 1))
