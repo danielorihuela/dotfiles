@@ -49,10 +49,16 @@
   (marginalia-mode))
 
 (use-package corfu
+  :after orderless
   :init (global-corfu-mode)
   :custom
   (corfu-auto t))
 
+(use-package orderless
+  :straight t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 (defun do/org-setup ()
   (org-indent-mode)
   (visual-line-mode 1))

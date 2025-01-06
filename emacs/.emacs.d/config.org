@@ -101,6 +101,7 @@ Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394
 - Consult    -> Provides search and navigation commands
 - Marginalia -> Adds annotations
 - Corfu      -> Adds autocompletion
+- Orderless  -> "orderless" completion style (e.g. you can search for "package use" instead of "*use-package")
 
 #+begin_src emacs-lisp
   (use-package vertico
@@ -117,9 +118,16 @@ Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394
     (marginalia-mode))
 
   (use-package corfu
+    :after orderless
     :init (global-corfu-mode)
     :custom
     (corfu-auto t))
+
+  (use-package orderless
+    :straight t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
 #+end_src
 
 * Org Mode
