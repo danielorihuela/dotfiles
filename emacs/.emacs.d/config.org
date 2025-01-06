@@ -279,6 +279,8 @@ UI panel to show all the possible completions of a key binding. For example, if 
 
 ** Rust
 
+Install gcc and rust-analyzer.
+
 #+begin_src emacs-lisp
   (use-package rust-ts-mode
     :mode "\\.rs\\'"
