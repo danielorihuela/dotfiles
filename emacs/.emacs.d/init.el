@@ -36,8 +36,7 @@
 (setq backup-directory-alist '((".*" . "~/.emacs.d/autosaves")))
 
 (use-package vertico
-  :custom
-  (vertico-cycle t)
+  :custom (vertico-cycle t)
   :init (vertico-mode))
 
 (use-package consult
@@ -45,17 +44,14 @@
 
 (use-package marginalia
   :after vertico
-  :init
-  (marginalia-mode))
+  :init (marginalia-mode))
 
 (use-package corfu
   :after orderless
   :init (global-corfu-mode)
-  :custom
-  (corfu-auto t))
+  :custom (corfu-auto t))
 
 (use-package orderless
-  :straight t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
@@ -63,13 +59,8 @@
 (use-package all-the-icons)
 (use-package dirvish
   :after evil
-  :init
-  (dirvish-override-dired-mode)
-  ;;:bind
-  ;;(:map dirvish-mode-map
-  ;;("g TAB" . dirvish-subtree-toggle)))
-  :config
-  (evil-define-key 'normal dirvish-mode-map (kbd "TAB") 'dirvish-subtree-toggle))
+  :init (dirvish-override-dired-mode)
+  :config (evil-define-key 'normal dirvish-mode-map (kbd "TAB") 'dirvish-subtree-toggle))
 
 (defun do/org-setup ()
   (org-indent-mode)
@@ -101,7 +92,7 @@
    'org-babel-load-languages
    '((python . t)
      (shell . t)
-     (ditaa . t))))
+     (dot . t))))
 
 (with-eval-after-load 'org
   (setq org-latex-logfiles-extensions
@@ -117,8 +108,7 @@
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 1))
+  :config (setq which-key-idle-delay 1))
 
 (use-package evil
   :init

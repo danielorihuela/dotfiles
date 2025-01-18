@@ -106,8 +106,7 @@ Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394
 
 #+begin_src emacs-lisp
   (use-package vertico
-    :custom
-    (vertico-cycle t)
+    :custom (vertico-cycle t)
     :init (vertico-mode))
 
   (use-package consult
@@ -115,17 +114,14 @@ Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394
 
   (use-package marginalia
     :after vertico
-    :init
-    (marginalia-mode))
+    :init (marginalia-mode))
 
   (use-package corfu
     :after orderless
     :init (global-corfu-mode)
-    :custom
-    (corfu-auto t))
+    :custom (corfu-auto t))
 
   (use-package orderless
-    :straight t
     :custom
     (completion-styles '(orderless basic))
     (completion-category-overrides '((file (styles basic partial-completion)))))
@@ -137,13 +133,8 @@ Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394
   (use-package all-the-icons)
   (use-package dirvish
     :after evil
-    :init
-    (dirvish-override-dired-mode)
-    ;;:bind
-    ;;(:map dirvish-mode-map
-    ;;("g TAB" . dirvish-subtree-toggle)))
-    :config
-    (evil-define-key 'normal dirvish-mode-map (kbd "TAB") 'dirvish-subtree-toggle))
+    :init (dirvish-override-dired-mode)
+    :config (evil-define-key 'normal dirvish-mode-map (kbd "TAB") 'dirvish-subtree-toggle))
 #+end_src
 
 * Org Mode
@@ -247,8 +238,7 @@ UI panel to show all the possible completions of a key binding. For example, if 
   (use-package which-key
     :init (which-key-mode)
     :diminish which-key-mode
-    :config
-    (setq which-key-idle-delay 1))
+    :config (setq which-key-idle-delay 1))
 #+end_src
 
 ** Evil mode
