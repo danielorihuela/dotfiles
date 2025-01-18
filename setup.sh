@@ -33,19 +33,9 @@ echo "Installing \`starship\`..."
 curl -fsSL https://starship.rs/install.sh | sudo sh -s -- -y 1>/dev/null
 install_font https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/FiraCode.zip FiraCode
 
-# APT doesn't contain nushell
-install_rust_github_release "nushell" "https://github.com/nushell/nushell" nu
-
-print_title "SET NUSHELL AS DEFAULT SHELL"
-nu_shell=$(which nu)
-if [[ -z $(cat /etc/shells | grep $nu_shell) ]]; then
-    echo $nu_shell | sudo tee -a /etc/shells
-fi
-chsh -s $nu_shell
-
-print_title "CONFIGURE STARSHIP"
-mkdir ~/.cache/starship
-starship init nu > ~/.cache/starship/init.nu
+print_title "SET ZSH AS DEFAULT SHELL"
+zsh_shell=$(which zsh)
+chsh -s $zsh_shell
 
 print_title "SYMLINK CONFIGURATIONS"
 echo "Symlinking configurations..."
