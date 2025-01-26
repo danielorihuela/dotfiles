@@ -68,10 +68,14 @@
 
 (use-package org
   :straight (:type built-in)
+  :bind (("C-c c" . org-capture))
   :hook
   ((org-mode . do/org-setup)
    (org-agenda-mode . org-agenda-entry-text-mode))
   :config
+  (setq org-capture-templates
+ 	'(("w" "Work journal" entry (file+datetree "~/org/work-journal.org")
+ 	   "* %?\nEntered on %U\n" :empty-lines 1)))
   (setq org-todo-keywords
         '((sequence "TODO" "DOING" "HOLD" "|" "CANCELLED" "DONE")))
   (setq org-agenda-files (directory-files-recursively "~/knowledge/" "\\.org$"))
