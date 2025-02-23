@@ -4,3 +4,6 @@ zsh/*
 
 # Emacs backups
 emacs/*~
+
+# Nix
+nixos.qcow2

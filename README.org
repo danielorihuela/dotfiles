@@ -1,7 +1,47 @@
 * dotfiles
 
+This repository contains all the tools and configs that I like using on my computers.
+
+I use Nix to replicate my environment on multiple OS.
+
 ** Installation
 
-#+begin_src bash
-bash setup.sh
-#+end_src
+1. Install nix with [[https://determinate.systems/nix-installer/][Determinate Nix installer]]
+
+    Among other things, it will ask which version of Nix you want to install (i.e. official or Determinate).
+    I suggest using official Nix on linux. Step 3 installs a package that is not compatible with
+    Determinate Nix version.
+
+    #+begin_src bash
+    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --determinate
+    #+end_src
+
+2. Install =just=
+
+    #+begin_src bash
+    nix profile install nixpkgs#just
+    #+end_src
+
+3. Install all the required tools
+
+    #+begin_src bash
+    just install-tools
+    #+end_src
+
+    On linux, this will install:
+
+    - [[https://github.com/numtide/system-manager][System Manager]]
+    - [[https://github.com/soupglasses/nix-system-graphics][Nix System Graphics]]
+
+    On macos, this will install:
+
+    - [[https://github.com/LnL7/nix-darwin][nix-darwin]]
+
+That's it. Now I can use =just= to list the available command and execute
+the desired one.
+
+When applying a configuration, take into account that some changes will only
+take effect after you log out and log back in.
+
+- Display GUI applications on the menu
+- Activate the configured shell
