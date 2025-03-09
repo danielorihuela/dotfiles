@@ -74,12 +74,12 @@
    (org-agenda-mode . org-agenda-entry-text-mode))
   :config
   (setq org-capture-templates
-       	'(
-	  ("w" "Work journal" entry (file+datetree "~/org/work-journal.org")
-       	   "* %?\nEntered on %U\n" :empty-lines 1)
-	  ("a" "Work accomplishments" entry (file+datetree "~/org/work-accomplishments.org")
-       	   "* %?\n" :empty-lines 1 :tree-type month)
-	  ))
+              '(
+  	("w" "Work journal" entry (file+datetree "~/org/work-journal.org")
+         	 "* %?\nEntered on %U\n" :empty-lines 1)
+  	("a" "Work accomplishments" entry (file+datetree "~/org/work-accomplishments.org")
+         	 "* %?\n" :empty-lines 1 :tree-type month)
+  	))
   (setq org-todo-keywords
         '((sequence "TODO" "DOING" "HOLD" "|" "CANCELLED" "DONE")))
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
@@ -100,7 +100,7 @@
    'org-babel-load-languages
    '((python . t)
      (shell . t)
-     (dot . t))))
+     (ditaa . t))))
 
 (with-eval-after-load 'org
   (setq org-latex-logfiles-extensions
