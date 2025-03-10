@@ -91,6 +91,39 @@
         ];
       };
 
+      darwinConfigurations."nr" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        pkgs = import nixpkgs {
+          system = "aarch64-darwin";
+          config.allowUnfree = true;
+        };
+        modules = [
+          ./machines/nr.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.dorihuela.imports = [ ./homes/nr.nix ];
+              backupFileExtension = "backup";
+            };
+          }
+
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              enable = true;
+              autoMigrate = true;
+              # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
+              enableRosetta = true;
+              user = "dorihuela";
+              taps = { "homebrew/homebrew-cask" = homebrew-cask; };
+            };
+          }
+
+        ];
+      };
+
       nixosConfigurations.calibre-vm = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [ ./vms/calibre.nix ];

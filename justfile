@@ -1,24 +1,31 @@
-# Install tools required to reproduce a Nix configuration (graphics are optional and only needed for GUI apps like ghostty)
-install-tools:
+# Configure graphics (this is optional and only needed for GUI apps like ghostty on linux distros other than NixOS)
+config-graphics:
     #!/usr/bin/env bash
     if [ "{{ os() }}" == "linux" ]; then
-        just _install-home-manager
-        just _install-graphics
-    elif [ "{{ os() }}" == "darwin" ]; then
+        sudo --preserve-env=PATH env nix run 'github:numtide/system-manager' -- switch --flake '.#default'
+    elif [ "{{ os() }}" == "macos" ]; then
         just _install-nix-darwin
     else 
-        echo "Unsupported OS"
+        echo "Unsupported OS: {{ os() }}"
     fi
 
 # Build configuration
 build-config config:
     #!/usr/bin/env bash
     if [ "{{ os() }}" == "linux" ]; then
-        home-manager switch --flake .#{{ config }}
-    elif [ "{{ os() }}" == "darwin" ]; then
-        darwin-rebuild switch --flake .#{{ config }}
+        if ! command -v home-manager 2>&1 >/dev/null; then
+            nix run home-manager/master -- init --switch --flake .#{{ config }}
+        else
+            home-manager switch --flake .#{{ config }}
+        fi
+    elif [ "{{ os() }}" == "macos" ]; then
+        if ! command -v darwin-rebuild 2>&1 >/dev/null; then
+            nix run nix-darwin/master#darwin-rebuild -- switch --flake .#{{ config }}
+        else
+            darwin-rebuild switch --flake .#{{ config }}
+        fi
     else 
-        echo "Unsupported OS"
+        echo "Unsupported OS: {{ os() }}"
     fi
 
 # Build virtual machine
@@ -32,16 +39,7 @@ delete-old-generations:
 # Uninstall all the tools, including Nix
 uninstall:
     #!/usr/bin/env bash
-    if [ "{{ os() }}" == "darwin" ]; then
+    if [ "{{ os() }}" == "macos" ]; then
         nix --extra-experimental-features "nix-command flakes" run nix-darwin#darwin-uninstaller
     fi
     /nix/nix-installer uninstall
-
-_install-home-manager:
-    nix run home-manager/master -- init --switch
-
-_install-nix-darwin:
-    nix run nix-darwin/master#darwin-rebuild -- switch
-
-_install-graphics:
-    sudo --preserve-env=PATH env nix run 'github:numtide/system-manager' -- switch --flake '.#default'

@@ -4,7 +4,7 @@ This repository contains all the tools and configs that I like using on my compu
 
 I use Nix to replicate my environment on multiple OS.
 
-** Installation
+** Apply configuration
 
 1. Install nix with [[https://determinate.systems/nix-installer/][Determinate Nix installer]]
 
@@ -13,7 +13,7 @@ I use Nix to replicate my environment on multiple OS.
     Determinate Nix version.
 
     #+begin_src bash
-    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --determinate
+    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
     #+end_src
 
 2. Install =just=
@@ -22,25 +22,32 @@ I use Nix to replicate my environment on multiple OS.
     nix profile install nixpkgs#just
     #+end_src
 
-3. Install all the required tools
+3. Apply configuration
 
     #+begin_src bash
-    just install-tools
+    just build-config "config"
     #+end_src
+
+    This will transparently install the tools required to apply the config on the current OS.
 
     On linux, this will install:
 
     - [[https://github.com/numtide/system-manager][System Manager]]
-    - [[https://github.com/soupglasses/nix-system-graphics][Nix System Graphics]]
 
     On macos, this will install:
 
     - [[https://github.com/LnL7/nix-darwin][nix-darwin]]
 
-That's it. Now I can use =just= to list the available command and execute
-the desired one.
+4. (Only for Linux systems other than NixOS) Install graphics
 
-When applying a configuration, take into account that some changes will only
+    #+begin_src bash
+    just build-config "config"
+    #+end_src
+
+    This installs [[https://github.com/soupglasses/nix-system-graphics][Nix System Graphics]]
+    and it's required for GUI apps like ghostty.
+
+That's it. When applying a configuration, take into account that some changes will only
 take effect after you log out and log back in.
 
 - Display GUI applications on the menu
