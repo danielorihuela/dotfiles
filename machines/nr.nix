@@ -10,11 +10,13 @@
     home = "/Users/dorihuela";
   };
 
+  security.pam.services.sudo_local.touchIdAuth = true;
+
   homebrew = {
     enable = true;
 
     taps = [ ];
-    brews = [ "bash" "coreutils" "findutils" "awscli" "ansible" "gpg" "pinentry-mac" "terraform"];
+    brews = [ "bash" "coreutils" "findutils" "awscli" "ansible" "gpg" "pinentry-mac" "rustup" "terraform"];
     casks = [ "ghostty" ];
   };
 }
