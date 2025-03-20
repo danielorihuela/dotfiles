@@ -16,7 +16,7 @@
     enable = true;
 
     taps = [ ];
-    brews = [ "bash" "coreutils" "findutils" "awscli" "ansible" "gpg" "pinentry-mac" "rustup" "terraform"];
+    brews = [ "bash" "coreutils" "findutils" "awscli" "ansible" "ctlptl" "gpg" "helm" "minikube" "pinentry-mac" "rustup" "terraform" "tilt"];
     casks = [ "ghostty" ];
   };
 }
