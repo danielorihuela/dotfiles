@@ -3,8 +3,6 @@ config-graphics:
     #!/usr/bin/env bash
     if [ "{{ os() }}" == "linux" ]; then
         sudo --preserve-env=PATH env nix run 'github:numtide/system-manager' -- switch --flake '.#default'
-    elif [ "{{ os() }}" == "macos" ]; then
-        just _install-nix-darwin
     else 
         echo "Unsupported OS: {{ os() }}"
     fi
@@ -20,9 +18,9 @@ build-config config:
         fi
     elif [ "{{ os() }}" == "macos" ]; then
         if ! command -v darwin-rebuild 2>&1 >/dev/null; then
-            nix run nix-darwin/master#darwin-rebuild -- switch --flake .#{{ config }}
+            sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake .#{{ config }}
         else
-            darwin-rebuild switch --flake .#{{ config }}
+            sudo darwin-rebuild switch --flake .#{{ config }}
         fi
     else 
         echo "Unsupported OS: {{ os() }}"

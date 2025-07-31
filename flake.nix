@@ -25,18 +25,13 @@
     };
 
     nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
+      url = "github:zhaofengli/nix-homebrew";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
-      flake = false;
     };
   };
 
   outputs = { self, nixpkgs, home-manager, system-manager, nix-system-graphics
-    , darwin, nix-homebrew, homebrew-cask, ... }: {
+    , darwin, nix-homebrew, ... }: {
 
       homeConfigurations."dani" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
@@ -84,7 +79,6 @@
               # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
               enableRosetta = true;
               user = "dani";
-              taps = { "homebrew/homebrew-cask" = homebrew-cask; };
             };
           }
 
@@ -117,7 +111,6 @@
               # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
               enableRosetta = true;
               user = "dorihuela";
-              taps = { "homebrew/homebrew-cask" = homebrew-cask; };
             };
           }
 

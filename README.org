@@ -19,10 +19,12 @@ I use Nix to replicate my environment on multiple OS.
 2. Install =just=
 
     #+begin_src bash
-    nix profile install nixpkgs#just
+    nix profile add nixpkgs#just
     #+end_src
 
 3. Apply configuration
+
+    In macos, remember to give "Full Disk Access" to nix.
 
     #+begin_src bash
     just build-config "config"
@@ -32,20 +34,22 @@ I use Nix to replicate my environment on multiple OS.
 
     On linux, this will install:
 
-    - [[https://github.com/numtide/system-manager][System Manager]]
+    - [[https://github.com/nix-community/home-manager][Home Manager]]
 
     On macos, this will install:
 
     - [[https://github.com/LnL7/nix-darwin][nix-darwin]]
+    - [[https://github.com/nix-community/home-manager][Home Manager]]
 
 4. (Only for Linux systems other than NixOS) Install graphics
 
     #+begin_src bash
-    just build-config "config"
+    just config-graphics
     #+end_src
 
-    This installs [[https://github.com/soupglasses/nix-system-graphics][Nix System Graphics]]
-    and it's required for GUI apps like ghostty.
+    This installs [[https://github.com/numtide/system-manager][System Manager]] and
+    [[https://github.com/soupglasses/nix-system-graphics][Nix System Graphics]].
+    Required for GUI apps like ghostty.
 
 That's it. When applying a configuration, take into account that some changes will only
 take effect after you log out and log back in.

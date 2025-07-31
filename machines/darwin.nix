@@ -3,6 +3,7 @@
 {
   nix.settings.experimental-features = "nix-command flakes";
   system.stateVersion = 6;
+  system.primaryUser = "dani";
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   users.users.dani = {
@@ -14,8 +15,8 @@
     enable = true;
     onActivation.cleanup = "zap";
 
-    taps = [ ];
+    taps = [ "homebrew/cask" ];
     brews = [ "bash" "coreutils" "findutils" ];
-    casks = [ "ghostty" ];
+    casks = [ "bitwarden" "cryptomator" "fuse-t" "ghostty" ];
   };
 }
