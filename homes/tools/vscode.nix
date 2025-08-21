@@ -5,7 +5,10 @@
     enable = true;
 
     profiles.default = {
-      userSettings = { "workbench.colorTheme" = "Dracula Theme"; };
+      userSettings = {
+        "workbench.colorTheme" = "Dracula Theme";
+        "files.insertFinalNewline" = true;
+      };
 
       extensions = with pkgs.vscode-extensions; [
         dracula-theme.theme-dracula
