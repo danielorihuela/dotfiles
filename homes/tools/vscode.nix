@@ -1,21 +1,34 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+let
+  commonUserSettings = {
+    "workbench.colorTheme" = "Dracula Theme";
+    "files.insertFinalNewline" = true;
+  };
+
+  commonExtensions = with pkgs.vscode-extensions; [
+    dracula-theme.theme-dracula
+    eamodio.gitlens
+
+    github.copilot
+    github.copilot-chat
+
+    jnoortheen.nix-ide
+  ];
+in {
   home.packages = with pkgs; [ nixfmt-classic ];
 
   programs.vscode = {
     enable = true;
 
     profiles.default = {
-      userSettings = {
-        "workbench.colorTheme" = "Dracula Theme";
-        "files.insertFinalNewline" = true;
-      };
+      userSettings = commonUserSettings;
+      extensions = commonExtensions;
+    };
 
-      extensions = with pkgs.vscode-extensions; [
-        dracula-theme.theme-dracula
-        eamodio.gitlens
-
-        jnoortheen.nix-ide
-      ];
+    profiles.golang = {
+      userSettings = commonUserSettings;
+      extensions = with pkgs.vscode-extensions;
+        commonExtensions ++ [ golang.go ];
     };
   };
 }
