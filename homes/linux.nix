@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, nixgl, ... }:
 
 {
   imports = [
@@ -16,6 +16,12 @@
 
   home.username = "dani";
   home.homeDirectory = "/home/dani";
+
+  nixGL = {
+    packages = import nixgl { inherit pkgs; };
+    defaultWrapper = "mesa";
+    installScripts = [ "mesa" ];
+  };
 
   programs.firefox.enable = true;
   programs.chromium = {

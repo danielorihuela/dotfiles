@@ -27,10 +27,15 @@
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
     };
+
+    nixgl = {
+      url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, system-manager, nix-system-graphics
-    , darwin, nix-homebrew, ... }: {
+    , darwin, nix-homebrew, nixgl, ... }: {
 
       homeConfigurations."dani" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
@@ -38,6 +43,9 @@
           config.allowUnfree = true;
         };
         modules = [ ./homes/linux.nix ];
+        extraSpecialArgs = {
+          inherit nixgl;
+        };
       };
 
       # Run graphics accelerated programs built with Nix on any Linux distribution

@@ -1,10 +1,10 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   programs.ghostty = {
     enable = true;
 
     # Ghostty Nix package doesn't work on darwin
     # This is a hack to manage the config with home-manager but not install the package
-    package = pkgs.lib.mkIf pkgs.stdenv.isDarwin null;
+    package = if pkgs.stdenv.isDarwin then null else config.lib.nixGL.wrap pkgs.ghostty;
 
     # Disable when package is null to avoid building errors
     installBatSyntax = !pkgs.stdenv.isDarwin;
