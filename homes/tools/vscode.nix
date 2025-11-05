@@ -3,6 +3,7 @@ let
   commonUserSettings = {
     "workbench.colorTheme" = "Dracula Theme";
     "files.insertFinalNewline" = true;
+    "terminal.integrated.defaultProfile.linux" = "zsh";
   };
 
   commonExtensions = with pkgs.vscode-extensions; [
