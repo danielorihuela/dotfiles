@@ -12,6 +12,7 @@
     settings = {
       theme = "Dracula";
       font-size = 16;
+      command = "zsh";
     };
   };
 }

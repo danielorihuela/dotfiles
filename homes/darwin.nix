@@ -7,8 +7,6 @@
     ./tools/git.nix
     ./tools/shell.nix
     ./tools/vscode.nix
-
-    ./activations/zsh-as-default-shell.nix
   ];
 
   home.stateVersion = "24.11";

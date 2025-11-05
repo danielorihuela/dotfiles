@@ -8,7 +8,6 @@
     ./tools/shell.nix
     ./tools/vscode.nix
 
-    ./activations/zsh-as-default-shell.nix
     ./activations/vscode-change-sandbox-permissions.nix
   ];
 
