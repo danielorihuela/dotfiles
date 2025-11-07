@@ -1,6 +1,7 @@
 { ... }: {
   programs.git = {
     enable = true;
-    userEmail = "danielorihuelarodriguez@gmail.com";
+
+    settings.user.email = "danielorihuelarodriguez@gmail.com";
   };
 }

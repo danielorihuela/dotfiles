@@ -17,7 +17,22 @@
     enable = true;
 
     taps = [ "homebrew/bundle" ];
-    brews = [ "bash" "coreutils" "findutils" "awscli" "ansible" "ctlptl" "gpg" "helm" "minikube" "pinentry-mac" "rustup" "terraform" "tilt" "helm-docs"];
+    brews = [
+      "bash"
+      "coreutils"
+      "findutils"
+      "awscli"
+      "ansible"
+      "ctlptl"
+      "gpg"
+      "helm"
+      "minikube"
+      "pinentry-mac"
+      "rustup"
+      "terraform"
+      "tilt"
+      "helm-docs"
+    ];
     casks = [ "ghostty" ];
   };
 }

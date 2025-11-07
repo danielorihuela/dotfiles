@@ -1,5 +1,5 @@
 {
-  description = "Home Manager configuration of linuxlite";
+  description = "Machines configurations";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -9,24 +9,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    system-manager = {
-      url = "github:numtide/system-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-system-graphics = {
-      url = "github:soupglasses/nix-system-graphics";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-homebrew = {
-      url = "github:zhaofengli/nix-homebrew";
-    };
+    nix-homebrew = { url = "github:zhaofengli/nix-homebrew"; };
 
     nixgl = {
       url = "github:nix-community/nixGL";
@@ -34,8 +22,12 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, system-manager, nix-system-graphics
-    , darwin, nix-homebrew, nixgl, ... }: {
+  outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, nixgl, ... }:
+    let
+      darwinHelpers = import ./helpers/darwin.nix {
+        inherit nixpkgs darwin home-manager nix-homebrew;
+      };
+    in {
 
       homeConfigurations."dani" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
@@ -43,84 +35,19 @@
           config.allowUnfree = true;
         };
         modules = [ ./homes/linux.nix ];
-        extraSpecialArgs = {
-          inherit nixgl;
-        };
+        extraSpecialArgs = { inherit nixgl; };
       };
 
-      # Run graphics accelerated programs built with Nix on any Linux distribution
-      systemConfigs.default = system-manager.lib.makeSystemConfig {
-        modules = [
-          nix-system-graphics.systemModules.default
-          ({
-            config = {
-              nixpkgs.hostPlatform = "x86_64-linux";
-              system-manager.allowAnyDistro = true;
-              system-graphics.enable = true;
-            };
-          })
-        ];
+      darwinConfigurations."dani" = darwinHelpers.darwinConfiguration {
+        username = "dani";
+        machineFilePath = ./machines/darwin.nix;
+        homeFilePath = ./homes/darwin.nix;
       };
 
-      darwinConfigurations."dani" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        pkgs = import nixpkgs {
-          system = "aarch64-darwin";
-          config.allowUnfree = true;
-        };
-        modules = [
-          ./machines/darwin.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.dani.imports = [ ./homes/darwin.nix ];
-            };
-          }
-
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
-              enableRosetta = true;
-              user = "dani";
-            };
-          }
-
-        ];
-      };
-
-      darwinConfigurations."nr" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        pkgs = import nixpkgs {
-          system = "aarch64-darwin";
-          config.allowUnfree = true;
-        };
-        modules = [
-          ./machines/nr.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.dorihuela.imports = [ ./homes/nr.nix ];
-              backupFileExtension = "backup";
-            };
-          }
-
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
-              enableRosetta = true;
-              user = "dorihuela";
-            };
-          }
-
-        ];
+      darwinConfigurations."nr" = darwinHelpers.darwinConfiguration {
+        username = "dorihuela";
+        machineFilePath = ./machines/nr.nix;
+        homeFilePath = ./homes/nr.nix;
       };
 
       nixosConfigurations.calibre-vm = nixpkgs.lib.nixosSystem {
