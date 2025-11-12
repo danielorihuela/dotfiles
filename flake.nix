@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -22,8 +23,14 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, nixgl, ... }:
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, darwin, nix-homebrew, nixgl, ... }:
     let
+      overlay-bat = final: prev: {
+        bat = (import nixpkgs-stable {
+          system = "x86_64-linux";
+        }).bat;
+      };
+
       darwinHelpers = import ./helpers/darwin.nix {
         inherit nixpkgs darwin home-manager nix-homebrew;
       };
@@ -33,6 +40,7 @@
         pkgs = import nixpkgs {
           system = "x86_64-linux";
           config.allowUnfree = true;
+          overlays = [ overlay-bat ];
         };
         modules = [ ./homes/linux.nix ];
         extraSpecialArgs = { inherit nixgl; };

@@ -1,4 +1,4 @@
-{ ... }: {
+{ pkgs, ... }: {
   home.sessionVariables = { EDITOR = "vi"; };
 
   programs.zsh = {
