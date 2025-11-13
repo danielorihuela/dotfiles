@@ -6,7 +6,7 @@
     ./tools/ghostty.nix
     ./tools/git.nix
     ./tools/shell.nix
-    ./tools/vscode.nix
+    ./tools/vscode-nr.nix
 
     ./activations/zsh-as-default-shell.nix
   ];
@@ -16,4 +16,5 @@
 
   home.username = "dorihuela";
   home.homeDirectory = "/Users/dorihuela";
+  home.sessionPath = [ "$HOME/.cargo/bin" "$HOME/.rd/bin" ];
 }
