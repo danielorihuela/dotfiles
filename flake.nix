@@ -27,12 +27,12 @@
     let
       overlay-bat = final: prev: {
         bat = (import nixpkgs-stable {
-          system = "x86_64-linux";
+          system = final.stdenv.hostPlatform.system;
         }).bat;
       };
 
       darwinHelpers = import ./helpers/darwin.nix {
-        inherit nixpkgs darwin home-manager nix-homebrew;
+        inherit nixpkgs darwin home-manager nix-homebrew overlay-bat;
       };
     in {
 
