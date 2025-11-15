@@ -4,6 +4,7 @@ let
     "workbench.colorTheme" = "Dracula Theme";
     "files.insertFinalNewline" = true;
     "terminal.integrated.defaultProfile.linux" = "zsh";
+    "terminal.integrated.stickyScroll.enabled" = false;
   };
 
   commonExtensions = with pkgs.vscode-extensions; [
