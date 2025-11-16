@@ -21,9 +21,14 @@
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, darwin, nix-homebrew, nixgl, ... }:
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, darwin, nix-homebrew, nixgl, plasma-manager, ... }:
     let
       overlay-bat = final: prev: {
         bat = (import nixpkgs-stable {
@@ -65,5 +70,18 @@
       packages.x86_64-linux.calibre-vm =
         self.nixosConfigurations.calibre-vm.config.system.build.vm;
 
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./machines/nixos.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+            home-manager.users.dani = ./homes/nixos.nix;
+          }
+        ];
+      };
     };
 }
