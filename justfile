@@ -32,7 +32,7 @@ build-vm vm:
 
 # Delete ALL old generations
 delete-old-generations:
-    nix-collect-garbage -d
+    sudo nix-collect-garbage -d
 
 # Uninstall all the tools, including Nix
 uninstall:

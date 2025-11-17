@@ -2,16 +2,16 @@
   description = "Machines configurations";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     darwin = {
-      url = "github:lnl7/nix-darwin";
+      url = "github:lnl7/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -28,16 +28,22 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, darwin, nix-homebrew, nixgl, plasma-manager, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, darwin
+    , nix-homebrew, nixgl, plasma-manager, ... }:
     let
-      overlay-bat = final: prev: {
-        bat = (import nixpkgs-stable {
-          system = final.stdenv.hostPlatform.system;
-        }).bat;
+      overlay-vscode = final: prev: {
+        vscode-extensions = (prev.vscode-extensions) // {
+          github = (prev.vscode-extensions.github) // {
+            copilot-chat = (import nixpkgs-unstable {
+              system = final.stdenv.hostPlatform.system;
+              config.allowUnfree = true;
+            }).vscode-extensions.github.copilot-chat;
+          };
+        };
       };
 
       darwinHelpers = import ./helpers/darwin.nix {
-        inherit nixpkgs darwin home-manager nix-homebrew overlay-bat;
+        inherit nixpkgs darwin home-manager nix-homebrew overlay-vscode;
       };
     in {
 
@@ -45,7 +51,7 @@
         pkgs = import nixpkgs {
           system = "x86_64-linux";
           config.allowUnfree = true;
-          overlays = [ overlay-bat ];
+          overlays = [ overlay-vscode ];
         };
         modules = [ ./homes/linux.nix ];
         extraSpecialArgs = { inherit nixgl; };
@@ -78,7 +84,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+            home-manager.sharedModules =
+              [ plasma-manager.homeModules.plasma-manager ];
             home-manager.users.dani = ./homes/nixos.nix;
           }
         ];

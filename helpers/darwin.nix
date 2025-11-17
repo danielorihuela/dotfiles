@@ -1,4 +1,4 @@
-{ nixpkgs, darwin, home-manager, nix-homebrew, overlay-bat }: {
+{ nixpkgs, darwin, home-manager, nix-homebrew, overlay-vscode }: {
   darwinConfiguration = { username, machineFilePath, homeFilePath }:
     darwin.lib.darwinSystem {
       system = "aarch64-darwin";
@@ -6,7 +6,7 @@
       pkgs = import nixpkgs {
         system = "aarch64-darwin";
         config.allowUnfree = true;
-        overlays = [ overlay-bat ];
+        overlays = [ overlay-vscode ];
       };
 
       modules = [
