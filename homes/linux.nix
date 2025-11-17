@@ -17,7 +17,7 @@
   home.username = "dani";
   home.homeDirectory = "/home/dani";
 
-  targets.genericLinux.nixGL = {
+  nixGL = {
     packages = import nixgl { inherit pkgs; };
     defaultWrapper = "mesa";
     installScripts = [ "mesa" ];
