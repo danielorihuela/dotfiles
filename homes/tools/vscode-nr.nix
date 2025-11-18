@@ -5,6 +5,7 @@ let
     "files.insertFinalNewline" = true;
     "terminal.integrated.defaultProfile.linux" = "zsh";
     "terminal.integrated.stickyScroll.enabled" = false;
+    "update.mode" = "none";
   };
 
   commonExtensions = with pkgs.vscode-extensions; [

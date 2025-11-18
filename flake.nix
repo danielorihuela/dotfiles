@@ -39,6 +39,11 @@
               config.allowUnfree = true;
             }).vscode-extensions.github.copilot-chat;
           };
+
+          rust-lang.rust-analyzer = (import nixpkgs-unstable {
+            system = final.stdenv.hostPlatform.system;
+            config.allowUnfree = true;
+          }).vscode-extensions.rust-lang.rust-analyzer;
         };
       };
 
