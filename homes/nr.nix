@@ -6,7 +6,7 @@
     ./tools/ghostty.nix
     ./tools/git.nix
     ./tools/shell.nix
-    ./tools/vscode-nr.nix
+    ./tools/vscode.nix
 
     ./activations/zsh-as-default-shell.nix
   ];

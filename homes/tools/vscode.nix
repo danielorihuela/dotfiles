@@ -25,7 +25,16 @@ in {
 
     profiles.default = {
       userSettings = commonUserSettings;
-      extensions = commonExtensions;
+      extensions = with pkgs.vscode-extensions;
+        commonExtensions ++ [ rust-lang.rust-analyzer ];
+    };
+
+    profiles.windows = {
+      userSettings = commonUserSettings // {
+        "rust-analyzer.cargo.target" = "aarch64-pc-windows-msvc";
+      };
+      extensions = with pkgs.vscode-extensions;
+        commonExtensions ++ [ rust-lang.rust-analyzer ];
     };
 
     profiles.golang = {
