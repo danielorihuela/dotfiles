@@ -41,16 +41,6 @@ I use Nix to replicate my environment on multiple OS.
     - [[https://github.com/LnL7/nix-darwin][nix-darwin]]
     - [[https://github.com/nix-community/home-manager][Home Manager]]
 
-4. (Only for Linux systems other than NixOS) Install graphics
-
-    #+begin_src bash
-    just config-graphics
-    #+end_src
-
-    This installs [[https://github.com/numtide/system-manager][System Manager]] and
-    [[https://github.com/soupglasses/nix-system-graphics][Nix System Graphics]].
-    Required for GUI apps like ghostty.
-
 That's it. When applying a configuration, take into account that some changes will only
 take effect after you log out and log back in.
 

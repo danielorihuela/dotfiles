@@ -1,12 +1,3 @@
-# Configure graphics (this is optional and only needed for GUI apps like ghostty on linux distros other than NixOS)
-config-graphics:
-    #!/usr/bin/env bash
-    if [ "{{ os() }}" == "linux" ]; then
-        sudo --preserve-env=PATH env nix run 'github:numtide/system-manager' -- switch --flake '.#default'
-    else 
-        echo "Unsupported OS: {{ os() }}"
-    fi
-
 # Build configuration
 build-config config:
     #!/usr/bin/env bash

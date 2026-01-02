@@ -2,16 +2,15 @@
   description = "Machines configurations";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     darwin = {
-      url = "github:lnl7/nix-darwin/nix-darwin-25.05";
+      url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -28,27 +27,11 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, darwin
-    , nix-homebrew, nixgl, plasma-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, nixgl
+    , plasma-manager, ... }:
     let
-      overlay-vscode = final: prev: {
-        vscode-extensions = (prev.vscode-extensions) // {
-          github = (prev.vscode-extensions.github) // {
-            copilot-chat = (import nixpkgs-unstable {
-              system = final.stdenv.hostPlatform.system;
-              config.allowUnfree = true;
-            }).vscode-extensions.github.copilot-chat;
-          };
-
-          rust-lang.rust-analyzer = (import nixpkgs-unstable {
-            system = final.stdenv.hostPlatform.system;
-            config.allowUnfree = true;
-          }).vscode-extensions.rust-lang.rust-analyzer;
-        };
-      };
-
       darwinHelpers = import ./helpers/darwin.nix {
-        inherit nixpkgs darwin home-manager nix-homebrew overlay-vscode;
+        inherit nixpkgs darwin home-manager nix-homebrew;
       };
     in {
 
@@ -56,7 +39,6 @@
         pkgs = import nixpkgs {
           system = "x86_64-linux";
           config.allowUnfree = true;
-          overlays = [ overlay-vscode ];
         };
         modules = [ ./homes/linux.nix ];
         extraSpecialArgs = { inherit nixgl; };

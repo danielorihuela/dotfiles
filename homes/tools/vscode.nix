@@ -12,7 +12,6 @@ let
     dracula-theme.theme-dracula
     eamodio.gitlens
 
-    github.copilot
     github.copilot-chat
 
     jnoortheen.nix-ide
