@@ -1,5 +1,6 @@
 { nixpkgs, darwin, home-manager, nix-homebrew, overlay-vscode }: {
-  darwinConfiguration = { username, machineFilePath, homeFilePath }:
+  darwinConfiguration =
+    { username, machineFilePath, homeFilePath, homeManagerModules }:
     darwin.lib.darwinSystem {
       system = "aarch64-darwin";
 
@@ -30,6 +31,6 @@
             user = username;
           };
         }
-      ];
+      ] ++ homeManagerModules;
     };
 }

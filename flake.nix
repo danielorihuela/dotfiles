@@ -4,25 +4,35 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-homebrew = { url = "github:zhaofengli/nix-homebrew"; };
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixgl = {
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nvf = {
+      url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -33,6 +43,11 @@
       darwinHelpers = import ./helpers/darwin.nix {
         inherit nixpkgs darwin home-manager nix-homebrew;
       };
+
+      sharedModules = [
+        self.inputs.catppuccin.homeModules.catppuccin
+        self.inputs.nvf.homeManagerModules.default
+      ];
     in {
 
       homeConfigurations."dani" = home-manager.lib.homeManagerConfiguration {
@@ -40,7 +55,7 @@
           system = "x86_64-linux";
           config.allowUnfree = true;
         };
-        modules = [ ./homes/linux.nix ];
+        modules = [ ./homes/linux.nix ] ++ sharedModules;
         extraSpecialArgs = { inherit nixgl; };
       };
 
@@ -48,12 +63,14 @@
         username = "dani";
         machineFilePath = ./machines/darwin.nix;
         homeFilePath = ./homes/darwin.nix;
+        homeManagerModules = sharedModules;
       };
 
       darwinConfigurations."nr" = darwinHelpers.darwinConfiguration {
         username = "dorihuela";
         machineFilePath = ./machines/nr.nix;
         homeFilePath = ./homes/nr.nix;
+        homeManagerModules = sharedModules;
       };
 
       nixosConfigurations.calibre-vm = nixpkgs.lib.nixosSystem {

@@ -28,7 +28,10 @@
     };
   };
 
-  programs.atuin.enable = true;
+  programs.atuin = {
+    forceOverwriteSettings = true;
+    enable = true;
+  };
 
   programs.bat = {
     enable = true;

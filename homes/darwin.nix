@@ -5,6 +5,7 @@
     ./tools/emacs.nix
     ./tools/ghostty.nix
     ./tools/git.nix
+    ./tools/neovim.nix
     ./tools/shell.nix
     ./tools/vscode.nix
   ];
@@ -14,6 +15,12 @@
 
   home.username = "dani";
   home.homeDirectory = "/Users/dani";
+
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+    accent = "teal";
+  };
 
   programs.firefox.enable = true;
   programs.chromium = {

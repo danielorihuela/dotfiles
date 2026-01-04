@@ -5,6 +5,7 @@
     ./tools/emacs.nix
     ./tools/ghostty.nix
     ./tools/git.nix
+    ./tools/neovim.nix
     ./tools/shell.nix
     ./tools/vscode.nix
 
@@ -17,4 +18,10 @@
   home.username = "dorihuela";
   home.homeDirectory = "/Users/dorihuela";
   home.sessionPath = [ "$HOME/.cargo/bin" "$HOME/.rd/bin" ];
+
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+    accent = "teal";
+  };
 }

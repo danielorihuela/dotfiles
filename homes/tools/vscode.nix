@@ -1,7 +1,6 @@
 { pkgs, ... }:
 let
   commonUserSettings = {
-    "workbench.colorTheme" = "Dracula Theme";
     "files.insertFinalNewline" = true;
     "terminal.integrated.defaultProfile.linux" = "zsh";
     "terminal.integrated.stickyScroll.enabled" = false;
@@ -9,7 +8,6 @@ let
   };
 
   commonExtensions = with pkgs.vscode-extensions; [
-    dracula-theme.theme-dracula
     eamodio.gitlens
 
     github.copilot-chat

@@ -5,6 +5,7 @@
     ./tools/emacs.nix
     ./tools/ghostty.nix
     ./tools/git.nix
+    ./tools/neovim.nix
     ./tools/shell.nix
     ./tools/vscode.nix
 
@@ -21,6 +22,12 @@
     packages = import nixgl { inherit pkgs; };
     defaultWrapper = "mesa";
     installScripts = [ "mesa" ];
+  };
+
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+    accent = "teal";
   };
 
   programs.firefox.enable = true;
