@@ -90,7 +90,9 @@
             home-manager.useUserPackages = true;
             home-manager.sharedModules =
               [ plasma-manager.homeModules.plasma-manager ];
-            home-manager.users.dani = ./homes/nixos.nix;
+            home-manager.users.dani = {
+              imports = [ ./homes/nixos.nix ] ++ sharedModules;
+            };
           }
         ];
       };

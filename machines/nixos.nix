@@ -23,7 +23,7 @@
 
   environment.systemPackages = with pkgs; [
     vim
-    tela-icon-theme
+    papirus-icon-theme
   ];
 
   system.stateVersion = "25.05";
@@ -36,7 +36,7 @@
   };
 
   environment.etc.backgroundImage = {
-    source = "/home/dani/dotfiles/backgrounds/deer.jpg";
+    source = "/etc/nixos/dotfiles/backgrounds/deer.jpg";
     target = ".background/.background-image";
   };
 }

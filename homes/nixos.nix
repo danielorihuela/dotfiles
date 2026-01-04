@@ -5,6 +5,7 @@
     ./tools/emacs.nix
     ./tools/ghostty.nix
     ./tools/git.nix
+    ./tools/neovim.nix
     ./tools/shell.nix
     ./tools/vscode.nix
   ];
@@ -20,8 +21,14 @@
 
     workspace = {
       wallpaper = "/etc/.background/.background-image";
-      iconTheme = "tela-icon-theme";
+      iconTheme = "Papirus-Dark";
     };
+  };
+
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+    accent = "teal";
   };
 
   programs.firefox.enable = true;
