@@ -23,7 +23,7 @@ in {
     profiles.default = {
       userSettings = commonUserSettings;
       extensions = with pkgs.vscode-extensions;
-        commonExtensions ++ [ rust-lang.rust-analyzer ];
+        commonExtensions ++ [ rust-lang.rust-analyzer tamasfe.even-better-toml ];
     };
 
     profiles.windows = {
@@ -31,7 +31,7 @@ in {
         "rust-analyzer.cargo.target" = "aarch64-pc-windows-msvc";
       };
       extensions = with pkgs.vscode-extensions;
-        commonExtensions ++ [ rust-lang.rust-analyzer ];
+        commonExtensions ++ [ rust-lang.rust-analyzer tamasfe.even-better-toml ];
     };
 
     profiles.golang = {

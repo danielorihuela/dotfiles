@@ -17,7 +17,7 @@
 
   home.username = "dorihuela";
   home.homeDirectory = "/Users/dorihuela";
-  home.sessionPath = [ "$HOME/.cargo/bin" "$HOME/.rd/bin" ];
+  home.sessionPath = [ "$HOME/.cargo/bin" ];
 
   catppuccin = {
     enable = true;

@@ -1,4 +1,4 @@
-{ nixpkgs, darwin, home-manager, nix-homebrew, overlay-vscode }: {
+{ nixpkgs, darwin, home-manager, nix-homebrew }: {
   darwinConfiguration =
     { username, machineFilePath, homeFilePath, homeManagerModules }:
     darwin.lib.darwinSystem {
@@ -7,7 +7,6 @@
       pkgs = import nixpkgs {
         system = "aarch64-darwin";
         config.allowUnfree = true;
-        overlays = [ overlay-vscode ];
       };
 
       modules = [
@@ -17,7 +16,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.${username}.imports = [ homeFilePath ];
+            users.${username}.imports = [ homeFilePath ] ++ homeManagerModules;
             backupFileExtension = "backup";
           };
         }
@@ -31,6 +30,6 @@
             user = username;
           };
         }
-      ] ++ homeManagerModules;
+      ];
     };
 }

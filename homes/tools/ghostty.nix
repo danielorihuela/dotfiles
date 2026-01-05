@@ -16,7 +16,6 @@
     installBatSyntax = !pkgs.stdenv.isDarwin;
 
     settings = {
-      theme = "Dracula";
       font-size = 16;
       command = "zsh";
     };
