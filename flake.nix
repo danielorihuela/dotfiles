@@ -96,5 +96,7 @@
           }
         ];
       };
+      packages.x86_64-linux.nixos =
+        self.nixosConfigurations.nixos.config.system.build.vm;
     };
 }

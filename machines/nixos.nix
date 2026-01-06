@@ -1,9 +1,12 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ./nixos-hardware.nix
-  ];
+  virtualisation.vmVariant = {
+    virtualisation = {
+      memorySize = 8192;
+      cores = 4;
+    };
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
