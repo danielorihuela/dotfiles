@@ -1,13 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  virtualisation.vmVariant = {
-    virtualisation = {
-      memorySize = 8192;
-      cores = 4;
-    };
-  };
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -24,18 +17,16 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  environment.systemPackages = with pkgs; [
-    vim
-    papirus-icon-theme
-  ];
+  environment.systemPackages = with pkgs; [ vim papirus-icon-theme ];
 
   system.stateVersion = "25.05";
-  
+
   users.users.dani = {
     home = "/home/dani";
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    initialHashedPassword = "$6$UmeRYWqt20jmqp9U$qpPkGTDdsm9X7yzVXhXg/EEYx3yxIZ5D7PbwCx3V9BDDysREzoNoPIOif5lUsXTvMhf8y4b7CfQMP7NdOMVT3/";
+    initialHashedPassword =
+      "$6$UmeRYWqt20jmqp9U$qpPkGTDdsm9X7yzVXhXg/EEYx3yxIZ5D7PbwCx3V9BDDysREzoNoPIOif5lUsXTvMhf8y4b7CfQMP7NdOMVT3/";
   };
 
   environment.etc.backgroundImage = {
