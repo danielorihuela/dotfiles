@@ -19,6 +19,8 @@
   programs.plasma = {
     enable = true;
 
+    kscreenlocker.appearance.wallpaper = "/etc/.background/.background-image";
+
     workspace = {
       wallpaper = "/etc/.background/.background-image";
       iconTheme = "Papirus-Dark";
