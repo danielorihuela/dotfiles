@@ -3,6 +3,7 @@
 {
   imports = [
     ./tools/emacs.nix
+    ./tools/flameshot.nix
     ./tools/ghostty.nix
     ./tools/git.nix
     ./tools/neovim.nix
