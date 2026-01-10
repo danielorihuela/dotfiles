@@ -3,6 +3,7 @@
 {
   imports = [
     ./tools/emacs.nix
+    ./tools/catppuccin.nix
     ./tools/ghostty.nix
     ./tools/git.nix
     ./tools/neovim.nix
@@ -18,10 +19,4 @@
   home.username = "dorihuela";
   home.homeDirectory = "/Users/dorihuela";
   home.sessionPath = [ "$HOME/.cargo/bin" ];
-
-  catppuccin = {
-    enable = true;
-    flavor = "mocha";
-    accent = "teal";
-  };
 }

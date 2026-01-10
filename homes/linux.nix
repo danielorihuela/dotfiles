@@ -3,6 +3,7 @@
 {
   imports = [
     ./tools/emacs.nix
+    ./tools/catppuccin.nix
     ./tools/flameshot.nix
     ./tools/ghostty.nix
     ./tools/git.nix
@@ -23,12 +24,6 @@
     packages = import nixgl { inherit pkgs; };
     defaultWrapper = "mesa";
     installScripts = [ "mesa" ];
-  };
-
-  catppuccin = {
-    enable = true;
-    flavor = "mocha";
-    accent = "teal";
   };
 
   programs.firefox.enable = true;

@@ -3,6 +3,7 @@
 {
   imports = [
     ./tools/emacs.nix
+    ./tools/catppuccin.nix
     ./tools/flameshot.nix
     ./tools/ghostty.nix
     ./tools/git.nix
@@ -26,12 +27,15 @@
       wallpaper = "/etc/.background/.background-image";
       iconTheme = "Papirus-Dark";
     };
-  };
 
-  catppuccin = {
-    enable = true;
-    flavor = "mocha";
-    accent = "teal";
+    hotkeys = {
+      commands = {
+        "flameshot" = {
+          command = "flameshot gui";
+          key = "Meta+S";
+        };
+      };
+    };
   };
 
   programs.firefox.enable = true;

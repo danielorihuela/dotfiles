@@ -3,6 +3,7 @@
 {
   imports = [
     ./tools/emacs.nix
+    ./tools/catppuccin.nix
     ./tools/flameshot.nix
     ./tools/ghostty.nix
     ./tools/git.nix
@@ -16,12 +17,6 @@
 
   home.username = "dani";
   home.homeDirectory = "/Users/dani";
-
-  catppuccin = {
-    enable = true;
-    flavor = "mocha";
-    accent = "teal";
-  };
 
   programs.firefox.enable = true;
   programs.chromium = {
