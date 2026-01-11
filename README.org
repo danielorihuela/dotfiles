@@ -6,20 +6,16 @@ I use Nix to replicate my environment on multiple OS.
 
 ** Apply configuration
 
-1. Install nix with [[https://determinate.systems/nix-installer/][Determinate Nix installer]]
-
-    Among other things, it will ask which version of Nix you want to install (i.e. official or Determinate).
-    I suggest using official Nix on linux. Step 3 installs a package that is not compatible with
-    Determinate Nix version.
+1. Install nix with [[https://github.com/NixOS/nix-installer][Nix installer]]
 
     #+begin_src bash
-    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+    curl --proto '=https' --tlsv1.2 -sSf -L https://artifacts.nixos.org/experimental-installer | sh -s -- install
     #+end_src
 
-2. Install =just=
+2. Create shell with =just=
 
     #+begin_src bash
-    nix profile add nixpkgs#just
+    nix shell nixpkgs#just
     #+end_src
 
 3. Apply configuration
