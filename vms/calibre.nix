@@ -17,10 +17,11 @@
     };
   };
   security.sudo.wheelNeedsPassword = false;
-  services.getty.autologinUser = "calibre";
 
-  services.xserver = {
-    enable = true;
+  services.xserver.enable = true;
+
+  services = {
+    getty.autologinUser = "calibre";
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
   };
