@@ -37,18 +37,46 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin, nix-homebrew, nixgl
-    , plasma-manager, ... }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      darwin,
+      nix-homebrew,
+      nixgl,
+      plasma-manager,
+      ...
+    }:
     let
       darwinHelpers = import ./helpers/darwin.nix {
-        inherit nixpkgs darwin home-manager nix-homebrew;
+        inherit
+          nixpkgs
+          darwin
+          home-manager
+          nix-homebrew
+          ;
       };
 
       sharedModules = [
         self.inputs.catppuccin.homeModules.catppuccin
         self.inputs.nvf.homeManagerModules.default
       ];
-    in {
+
+      darwinUsers = {
+        base = {
+          username = "dani";
+          homeFilePath = ./homes/darwin.nix;
+          machineFilePath = ./machines/darwin.nix;
+        };
+        nr = {
+          username = "dorihuela";
+          homeFilePath = ./homes/nr.nix;
+          machineFilePath = ./machines/nr.nix;
+        };
+      };
+    in
+    {
 
       homeConfigurations."dani" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
@@ -59,26 +87,21 @@
         extraSpecialArgs = { inherit nixgl; };
       };
 
-      darwinConfigurations."dani" = darwinHelpers.darwinConfiguration {
-        username = "dani";
-        machineFilePath = ./machines/darwin.nix;
-        homeFilePath = ./homes/darwin.nix;
-        homeManagerModules = sharedModules;
-      };
-
-      darwinConfigurations."nr" = darwinHelpers.darwinConfiguration {
-        username = "dorihuela";
-        machineFilePath = ./machines/nr.nix;
-        homeFilePath = ./homes/nr.nix;
-        homeManagerModules = sharedModules;
-      };
+      darwinConfigurations = builtins.mapAttrs (
+        name: data:
+        darwinHelpers.darwinConfiguration {
+          username = data.username;
+          machineFilePath = data.machineFilePath;
+          homeFilePath = data.homeFilePath;
+          homeManagerModules = sharedModules;
+        }
+      ) darwinUsers;
 
       nixosConfigurations.calibre-vm = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [ ./vms/calibre.nix ];
       };
-      packages.x86_64-linux.calibre-vm =
-        self.nixosConfigurations.calibre-vm.config.system.build.vm;
+      packages.x86_64-linux.calibre-vm = self.nixosConfigurations.calibre-vm.config.system.build.vm;
 
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -88,8 +111,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.sharedModules =
-              [ plasma-manager.homeModules.plasma-manager ];
+            home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
             home-manager.users.dani = {
               imports = [ ./homes/nixos.nix ] ++ sharedModules;
             };
