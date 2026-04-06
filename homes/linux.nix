@@ -1,4 +1,9 @@
-{ pkgs, nixgl, ... }:
+{
+  pkgs,
+  nixgl,
+  username,
+  ...
+}:
 
 {
   imports = [
@@ -17,8 +22,8 @@
   home.stateVersion = "25.05";
   programs.home-manager.enable = true;
 
-  home.username = "dani";
-  home.homeDirectory = "/home/dani";
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
 
   targets.genericLinux.nixGL = {
     packages = import nixgl { inherit pkgs; };

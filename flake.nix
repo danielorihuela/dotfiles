@@ -63,6 +63,13 @@
         self.inputs.nvf.homeManagerModules.default
       ];
 
+      nonNixosUsers = {
+        base = {
+          username = "dani";
+          homeFilePath = ./homes/linux.nix;
+        };
+      };
+
       darwinUsers = {
         base = {
           username = "dani";
@@ -78,17 +85,23 @@
     in
     {
 
-      homeConfigurations."dani" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
-        };
-        modules = [ ./homes/linux.nix ] ++ sharedModules;
-        extraSpecialArgs = { inherit nixgl; };
-      };
+      homeConfigurations = builtins.mapAttrs (
+        key: data:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+          };
+          modules = [ data.homeFilePath ] ++ sharedModules;
+          extraSpecialArgs = {
+            inherit nixgl;
+            username = data.username;
+          };
+        }
+      ) nonNixosUsers;
 
       darwinConfigurations = builtins.mapAttrs (
-        name: data:
+        key: data:
         darwinHelpers.darwinConfiguration {
           username = data.username;
           machineFilePath = data.machineFilePath;
