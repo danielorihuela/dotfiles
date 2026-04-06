@@ -18,7 +18,6 @@
   home.username = "dani";
   home.homeDirectory = "/Users/dani";
 
-  programs.firefox.enable = true;
   programs.chromium = {
     enable = true;
     package = pkgs.brave;
