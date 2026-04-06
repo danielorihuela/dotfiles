@@ -2,7 +2,7 @@
   description = "Machines configurations";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/843d505e4ae5f9237c1d10b57cc1ccda6128fd6e";
 
     darwin = {
       url = "github:lnl7/nix-darwin";
