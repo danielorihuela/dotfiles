@@ -1,6 +1,17 @@
-{ nixpkgs, darwin, home-manager, nix-homebrew }: {
+{
+  nixpkgs,
+  darwin,
+  home-manager,
+  nix-homebrew,
+}:
+{
   darwinConfiguration =
-    { username, machineFilePath, homeFilePath, homeManagerModules }:
+    {
+      username,
+      machineFilePath,
+      homeFilePath,
+      homeManagerModules,
+    }:
     darwin.lib.darwinSystem {
       system = "aarch64-darwin";
 

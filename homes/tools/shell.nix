@@ -1,5 +1,8 @@
-{ pkgs, ... }: {
-  home.sessionVariables = { EDITOR = "vi"; };
+{ pkgs, ... }:
+{
+  home.sessionVariables = {
+    EDITOR = "vi";
+  };
 
   programs.zsh = {
     enable = true;
@@ -35,7 +38,9 @@
 
   programs.bat = {
     enable = true;
-    config = { style = "full,-grid,-header-filename,-header-filesize"; };
+    config = {
+      style = "full,-grid,-header-filename,-header-filesize";
+    };
   };
 
   programs.eza.enable = true;

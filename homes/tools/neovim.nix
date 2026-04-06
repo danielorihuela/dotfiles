@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   programs.nvf = {
     enable = true;
 
@@ -13,7 +14,7 @@
       };
 
       lsp.enable = true;
-      
+
       languages = {
         enableTreesitter = true;
 

@@ -16,7 +16,16 @@
     onActivation.cleanup = "zap";
 
     taps = [ "homebrew/cask" ];
-    brews = [ "bash" "coreutils" "findutils" ];
-    casks = [ "bitwarden" "cryptomator" "fuse-t" "ghostty" ];
+    brews = [
+      "bash"
+      "coreutils"
+      "findutils"
+    ];
+    casks = [
+      "bitwarden"
+      "cryptomator"
+      "fuse-t"
+      "ghostty"
+    ];
   };
 }

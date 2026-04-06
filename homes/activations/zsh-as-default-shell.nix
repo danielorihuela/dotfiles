@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   home.activation.changeShell = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     if [ $(uname -s ) == "Darwin" ]; then
       readlink() {

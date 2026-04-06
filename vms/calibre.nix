@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   system.stateVersion = "24.11";
 
   virtualisation.vmVariant = {

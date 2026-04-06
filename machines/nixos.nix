@@ -1,10 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   services.xserver.enable = true;
   services.desktopManager.plasma6.enable = true;
@@ -17,7 +25,10 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  environment.systemPackages = with pkgs; [ vim papirus-icon-theme ];
+  environment.systemPackages = with pkgs; [
+    vim
+    papirus-icon-theme
+  ];
 
   system.stateVersion = "25.05";
 
@@ -25,8 +36,7 @@
     home = "/home/dani";
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    initialHashedPassword =
-      "$6$UmeRYWqt20jmqp9U$qpPkGTDdsm9X7yzVXhXg/EEYx3yxIZ5D7PbwCx3V9BDDysREzoNoPIOif5lUsXTvMhf8y4b7CfQMP7NdOMVT3/";
+    initialHashedPassword = "$6$UmeRYWqt20jmqp9U$qpPkGTDdsm9X7yzVXhXg/EEYx3yxIZ5D7PbwCx3V9BDDysREzoNoPIOif5lUsXTvMhf8y4b7CfQMP7NdOMVT3/";
   };
 
   environment.etc.backgroundImage = {

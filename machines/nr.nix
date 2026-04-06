@@ -33,6 +33,9 @@
       "tilt"
       "helm-docs"
     ];
-    casks = [ "ghostty" "claude-code" ];
+    casks = [
+      "ghostty"
+      "claude-code"
+    ];
   };
 }
