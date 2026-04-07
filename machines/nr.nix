@@ -1,14 +1,14 @@
-{ ... }:
+{ username, ... }:
 
 {
   nix.settings.experimental-features = "nix-command flakes";
   system.stateVersion = 6;
-  system.primaryUser = "dorihuela";
+  system.primaryUser = username;
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  users.users.dorihuela = {
-    name = "dorihuela";
-    home = "/Users/dorihuela";
+  users.users.${username} = {
+    name = username;
+    home = "/Users/${username}";
   };
 
   security.pam.services.sudo_local.touchIdAuth = true;

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
 {
   imports = [
@@ -15,8 +15,8 @@
   home.stateVersion = "25.05";
   programs.home-manager.enable = true;
 
-  home.username = "dani";
-  home.homeDirectory = "/Users/dani";
+  home.username = username;
+  home.homeDirectory = "/Users/${username}";
 
   programs.chromium = {
     enable = true;

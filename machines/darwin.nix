@@ -1,14 +1,14 @@
-{ ... }:
+{ username, ... }:
 
 {
   nix.settings.experimental-features = "nix-command flakes";
   system.stateVersion = 6;
-  system.primaryUser = "dani";
+  system.primaryUser = username;
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  users.users.dani = {
-    name = "dani";
-    home = "/Users/dani";
+  users.users.${username} = {
+    name = username;
+    home = "/Users/${username}";
   };
 
   homebrew = {

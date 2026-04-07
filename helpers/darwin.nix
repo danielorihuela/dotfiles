@@ -28,6 +28,9 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             users.${username}.imports = [ homeFilePath ] ++ homeManagerModules;
+            extraSpecialArgs = {
+              inherit username;
+            };
             backupFileExtension = "backup";
           };
         }
@@ -42,5 +45,6 @@
           };
         }
       ];
+      specialArgs = { inherit username; };
     };
 }

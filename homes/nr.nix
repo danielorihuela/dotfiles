@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
 {
   imports = [
@@ -16,7 +16,7 @@
   home.stateVersion = "25.05";
   programs.home-manager.enable = true;
 
-  home.username = "dorihuela";
-  home.homeDirectory = "/Users/dorihuela";
+  home.username = username;
+  home.homeDirectory = "/Users/${username}";
   home.sessionPath = [ "$HOME/.cargo/bin" ];
 }
