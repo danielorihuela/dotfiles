@@ -11,7 +11,7 @@
 # Visual Studio Code Process Sandboxing - https://code.visualstudio.com/blogs/2022/11/28/vscode-sandbox.
 { lib, ... }:
 {
-  home.activation.changeSandboxPermissions = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.vscodeChangeSandboxPermissions = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     PATH="/usr/bin:/bin:$PATH"
     for path in $(ls /nix/store/*vscode*/lib/vscode/chrome-sandbox)
     do

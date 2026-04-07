@@ -17,6 +17,7 @@
     ./tools/vscode.nix
 
     ./activations/vscode-change-sandbox-permissions.nix
+    ./activations/brave-change-sandbox-permissions.nix
   ];
 
   home.stateVersion = "25.05";
