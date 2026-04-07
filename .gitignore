@@ -2,8 +2,11 @@
 zsh/*
 !zsh/.zshrc
 
-# Emacs backups
-emacs/*~
+# Emacs
+emacs/*
+!emacs/config.org
+!emacs/early-init.el
+!emacs/init.el
 
 # Nix
 nixos.qcow2
