@@ -12,18 +12,12 @@ I use Nix to replicate my environment on multiple OS.
     curl --proto '=https' --tlsv1.2 -sSf -L https://artifacts.nixos.org/experimental-installer | sh -s -- install
     #+end_src
 
-2. Create shell with =just=
-
-    #+begin_src bash
-    nix shell nixpkgs#just
-    #+end_src
-
-3. Apply configuration
+2. Apply configuration
 
     In macos, remember to give "Full Disk Access" to nix.
 
     #+begin_src bash
-    just build-config "config"
+    nix run .#build-config "config name"
     #+end_src
 
     This will transparently install the tools required to apply the config on the current OS.
@@ -38,7 +32,7 @@ I use Nix to replicate my environment on multiple OS.
     - [[https://github.com/nix-community/home-manager][Home Manager]]
 
 That's it. When applying a configuration, take into account that some changes will only
-take effect after you log out and log back in.
+take effect after you log out and log back in. For example:
 
 - Display GUI applications on the menu
 - Activate the configured shell

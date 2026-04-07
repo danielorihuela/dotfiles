@@ -82,6 +82,11 @@
           machineFilePath = ./machines/nr.nix;
         };
       };
+
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
     in
     {
 
@@ -131,5 +136,55 @@
           }
         ];
       };
+
+      apps = nixpkgs.lib.genAttrs systems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          build-config = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "build-config";
+                text = ''
+                  if [ "$OSTYPE" == "linux-gnu" ]; then
+                      if ! command -v home-manager > /dev/null 2>&1; then
+                          nix run home-manager/master -- init --switch --flake .#"$1"
+                      else
+                          home-manager switch --flake .#"$1"
+                      fi
+                  elif [ "$OSTYPE" == "darwin" ]; then
+                      if ! command -v darwin-rebuild > /dev/null 2>&1; then
+                          sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake .#"$1"
+                      else
+                          sudo darwin-rebuild switch --flake .#"$1"
+                      fi
+                  else 
+                      echo "Unsupported OS: $OSTYPE"
+                  fi
+                '';
+              }
+            }/bin/build-config";
+          };
+
+          uninstall = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "uninstall";
+                text = ''
+                  if [ "$OSTYPE" == "darwin" ]; then
+                      nix --extra-experimental-features "nix-command flakes" run nix-darwin#darwin-uninstaller
+                  fi
+                  /nix/nix-installer uninstall
+                '';
+              }
+            }/bin/uninstall";
+          };
+        }
+      );
+
     };
 }
