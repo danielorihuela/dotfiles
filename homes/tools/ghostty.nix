@@ -20,6 +20,7 @@
     settings = {
       font-size = 16;
       command = "zsh";
+      mouse-scroll-multiplier = 10;
     };
   };
 }
