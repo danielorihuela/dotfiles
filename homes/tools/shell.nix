@@ -10,6 +10,7 @@
     shellAliases = {
       cat = "bat --pager=never";
       less = ''bat --pager="less -RF"'';
+      tree = "ls --tree";
     };
   };
 
