@@ -115,12 +115,6 @@
         }
       ) darwinUsers;
 
-      nixosConfigurations.calibre-vm = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [ ./vms/calibre.nix ];
-      };
-      packages.x86_64-linux.calibre-vm = self.nixosConfigurations.calibre-vm.config.system.build.vm;
-
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
@@ -136,6 +130,13 @@
           }
         ];
       };
+
+      nixosConfigurations.calibre-vm = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [ ./vms/calibre.nix ];
+      };
+      packages.x86_64-linux.calibre-vm =
+        self.nixosConfigurations.calibre-vm.config.system.build.images.iso;
 
       apps = nixpkgs.lib.genAttrs systems (
         system:

@@ -10,3 +10,4 @@ emacs/*
 
 # Nix
 nixos.qcow2
+result
