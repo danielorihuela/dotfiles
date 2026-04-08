@@ -5,6 +5,7 @@ let
     "terminal.integrated.defaultProfile.linux" = "zsh";
     "terminal.integrated.stickyScroll.enabled" = false;
     "update.mode" = "none";
+    "editor.formatOnSave" = true;
   };
 
   commonExtensions = with pkgs.vscode-extensions; [
