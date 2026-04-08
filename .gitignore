@@ -4,9 +4,11 @@ zsh/*
 
 # Emacs
 emacs/*
-!emacs/config.org
-!emacs/early-init.el
-!emacs/init.el
+!emacs/.emacs.d/
+emacs/.emacs.d/*
+!emacs/.emacs.d/config.org
+!emacs/.emacs.d/early-init.el
+!emacs/.emacs.d/init.el
 
 # Nix
 nixos.qcow2

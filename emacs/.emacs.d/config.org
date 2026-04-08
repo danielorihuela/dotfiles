@@ -50,8 +50,6 @@ all the repositories. Just wait.
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-  (straight-use-package 'use-package)
-
   (setq straight-use-package-by-default t)
   (setq straight-check-for-modifications nil)
 #+end_src
@@ -73,12 +71,10 @@ Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394
 ** Theme
 
 #+begin_src emacs-lisp
-  (use-package doom-themes
+  (use-package catppuccin-theme
     :straight t
     :config
-    (load-theme 'doom-dracula t)
-    ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config))
+    (load-theme 'catppuccin t))
 #+end_src
 
 ** Modeline
