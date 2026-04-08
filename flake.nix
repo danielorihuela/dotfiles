@@ -156,7 +156,7 @@
                       else
                           home-manager switch --flake .#"$1"
                       fi
-                  elif [ "$OSTYPE" == "darwin" ]; then
+                  elif [[ "$OSTYPE" == "darwin"* ]]; then
                       if ! command -v darwin-rebuild > /dev/null 2>&1; then
                           sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake .#"$1"
                       else
@@ -176,7 +176,7 @@
               pkgs.writeShellApplication {
                 name = "uninstall";
                 text = ''
-                  if [ "$OSTYPE" == "darwin" ]; then
+                  if [[ "$OSTYPE" == "darwin"* ]]; then
                       nix --extra-experimental-features "nix-command flakes" run nix-darwin#darwin-uninstaller
                   fi
                   /nix/nix-installer uninstall
