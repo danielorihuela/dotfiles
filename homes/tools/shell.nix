@@ -51,4 +51,6 @@
     enableZshIntegration = true;
     nix-direnv.enable = true;
   };
+
+  programs.gh.enable = true;
 }

@@ -1,17 +1,18 @@
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'use-package)
 
 (setq straight-use-package-by-default t)
 (setq straight-check-for-modifications nil)
@@ -21,12 +22,10 @@
       gcmh-auto-idle-delay-factor 10
       gcmh-high-cons-threshold (* 16 1024 1024))
 
-(use-package doom-themes
+(use-package catppuccin-theme
   :straight t
   :config
-  (load-theme 'doom-dracula t)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+  (load-theme 'catppuccin t))
 
 (use-package nerd-icons)
 (use-package doom-modeline
@@ -56,12 +55,6 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package all-the-icons)
-(use-package dirvish
-  :after evil
-  :init (dirvish-override-dired-mode)
-  :config (evil-define-key 'normal dirvish-mode-map (kbd "TAB") 'dirvish-subtree-toggle))
-
 (defun do/org-setup ()
   (org-indent-mode)
   (visual-line-mode 1))
@@ -74,12 +67,12 @@
    (org-agenda-mode . org-agenda-entry-text-mode))
   :config
   (setq org-capture-templates
-              '(
-  	("w" "Work journal" entry (file+datetree "~/org/work-journal.org")
-         	 "* %?\nEntered on %U\n" :empty-lines 1)
-  	("a" "Work accomplishments" entry (file+datetree "~/org/work-accomplishments.org")
-         	 "* %?\n" :empty-lines 1 :tree-type month)
-  	))
+       	'(
+	  ("w" "Work journal" entry (file+datetree "~/org/work-journal.org")
+       	   "* %?\nEntered on %U\n" :empty-lines 1)
+	  ("a" "Work accomplishments" entry (file+datetree "~/org/work-accomplishments.org")
+       	   "* %?\n" :empty-lines 1 :tree-type month)
+	  ))
   (setq org-todo-keywords
         '((sequence "TODO" "DOING" "HOLD" "|" "CANCELLED" "DONE")))
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
@@ -113,6 +106,32 @@
 (use-package toc-org
   :hook (org-mode . toc-org-mode))
 
+(setq auth-sources '("~/.authinfo"))
+
+(use-package magit
+  :commands (magit magit-status))
+(use-package forge
+  :after magit)
+(use-package consult-gh-forge
+  :after consult-gh
+  :config
+  (consult-gh-forge-mode +1))
+
+(use-package consult-gh)
+
+(use-package rust-ts-mode
+  :mode "\\.rs\\'"
+  :hook (rust-ts-mode . eglot-ensure))
+
+(use-package project
+  :straight (:type built-in)
+  :init
+  (setq project-vc-extra-root-markers '("Cargo.toml")))
+
+(use-package treemacs)
+(use-package treemacs-evil
+  :after treemacs)
+
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
@@ -131,18 +150,3 @@
   (evil-collection-init)
   :custom
   (evil-collection-setup-minibuffer t))
-
-(use-package magit)
-
-(use-package rust-ts-mode
-  :mode "\\.rs\\'"
-  :hook (rust-ts-mode . eglot-ensure))
-
-(use-package project
-  :straight (:type built-in)
-  :init
-  (setq project-vc-extra-root-markers '("Cargo.toml")))
-
-(use-package treemacs)
-(use-package treemacs-evil
-  :after treemacs)

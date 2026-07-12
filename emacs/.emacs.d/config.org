@@ -10,19 +10,18 @@
   - [[#modeline][Modeline]]
 - [[#auto-save-files][Auto save files]]
 - [[#search-and-completion][Search and completion]]
-- [[#file-manager][File Manager]]
 - [[#org-mode][Org Mode]]
   - [[#org][Org]]
   - [[#org-babel][Org Babel]]
   - [[#writing-research-in-latex][Writing Research in LaTeX]]
   - [[#table-of-contents][Table Of Contents]]
+- [[#programming][Programming]]
+  - [[#git-and-friends][Git and friends]]
+  - [[#rust][Rust]]
+  - [[#tree-navigation][Tree navigation]]
 - [[#other-tools][Other Tools]]
   - [[#which-key][Which key]]
   - [[#evil-mode][Evil mode]]
-- [[#ide][IDE]]
-  - [[#magit][Magit]]
-  - [[#rust][Rust]]
-  - [[#tree-navigation][Tree navigation]]
 
 * Notes
 
@@ -39,12 +38,15 @@ all the repositories. Just wait.
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
+         (expand-file-name
+          "straight/repos/straight.el/bootstrap.el"
+          (or (bound-and-true-p straight-base-dir)
+              user-emacs-directory)))
+        (bootstrap-version 7))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
           (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
            'silent 'inhibit-cookies)
         (goto-char (point-max))
         (eval-print-last-sexp)))
@@ -121,16 +123,6 @@ Check https://github.com/doomemacs/doomemacs/blob/986398504d09e585c7d1a8d73a6394
     :custom
     (completion-styles '(orderless basic))
     (completion-category-overrides '((file (styles basic partial-completion)))))
-#+end_src
-
-* File Manager
-
-#+begin_src emacs-lisp
-  (use-package all-the-icons)
-  (use-package dirvish
-    :after evil
-    :init (dirvish-override-dired-mode)
-    :config (evil-define-key 'normal dirvish-mode-map (kbd "TAB") 'dirvish-subtree-toggle))
 #+end_src
 
 * Org Mode
@@ -232,44 +224,31 @@ the number indicates the depth.
     :hook (org-mode . toc-org-mode))
 #+end_src
 
-* Other Tools
+* Programming
 
-** Which key
+** Git and friends
 
-UI panel to show all the possible completions of a key binding. For example, if you start pressing =C-c=, a panel will appear with the possible completions.
-
-#+begin_src emacs-lisp
-  (use-package which-key
-    :init (which-key-mode)
-    :diminish which-key-mode
-    :config (setq which-key-idle-delay 1))
-#+end_src
-
-** Evil mode
+Interface to interact with git.
 
 #+begin_src emacs-lisp
-  (use-package evil
-    :init
-    (setq evil-want-keybinding nil)
-    (setq evil-want-c-i-jump nil)
-    :config (evil-mode 1))
+  (setq auth-sources '("~/.authinfo"))
 
-  (use-package evil-collection
-    :after evil
+  (use-package magit
+    :commands (magit magit-status))
+  (use-package forge
+    :after magit)
+  (use-package consult-gh-forge
+    :after consult-gh
     :config
-    (setq evil-want-integration t)
-    (evil-collection-init)
-    :custom
-    (evil-collection-setup-minibuffer t))
+    (consult-gh-forge-mode +1))
 #+end_src
 
-* IDE
-
-** Magit
+Interface to interact with git repositories.
 
 #+begin_src emacs-lisp
-  (use-package magit)
+  (use-package consult-gh)
 #+end_src
+
 
 ** Rust
 
@@ -303,3 +282,35 @@ The following snippet solves that. =project.el= will now take into account
   (use-package treemacs-evil
     :after treemacs)
 #+end_src
+
+* Other Tools
+
+** Which key
+
+UI panel to show all the possible completions of a key binding. For example, if you start pressing =C-c=, a panel will appear with the possible completions.
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :init (which-key-mode)
+    :diminish which-key-mode
+    :config (setq which-key-idle-delay 1))
+#+end_src
+
+** Evil mode
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :init
+    (setq evil-want-keybinding nil)
+    (setq evil-want-c-i-jump nil)
+    :config (evil-mode 1))
+
+  (use-package evil-collection
+    :after evil
+    :config
+    (setq evil-want-integration t)
+    (evil-collection-init)
+    :custom
+    (evil-collection-setup-minibuffer t))
+#+end_src
+
