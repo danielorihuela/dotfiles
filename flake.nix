@@ -21,11 +21,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixgl = {
-      url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     catppuccin = {
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -44,7 +39,6 @@
       home-manager,
       darwin,
       nix-homebrew,
-      nixgl,
       plasma-manager,
       ...
     }:
@@ -99,7 +93,6 @@
           };
           modules = [ data.homeFilePath ] ++ sharedModules;
           extraSpecialArgs = {
-            inherit nixgl;
             username = data.username;
           };
         }

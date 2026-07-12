@@ -1,6 +1,5 @@
 {
   pkgs,
-  nixgl,
   username,
   ...
 }:
@@ -17,6 +16,7 @@
     ./tools/shell.nix
     ./tools/vscode.nix
 
+    ./activations/apt.nix
     ./activations/vscode-change-sandbox-permissions.nix
     ./activations/brave-change-sandbox-permissions.nix
   ];
@@ -26,10 +26,4 @@
 
   home.username = username;
   home.homeDirectory = "/home/${username}";
-
-  targets.genericLinux.nixGL = {
-    packages = import nixgl { inherit pkgs; };
-    defaultWrapper = "mesa";
-    installScripts = [ "mesa" ];
-  };
 }
