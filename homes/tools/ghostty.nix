@@ -1,6 +1,14 @@
-{ pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
-  usePackage = !pkgs.stdenv.isDarwin && config ? nixosVersion;
+  isLinux = pkgs.stdenv.isLinux;
+  isNixOS = config ? nixosVersion;
+  usePackage = isLinux && isNixOS;
+  useNativePackageManager = isLinux && !isNixOS;
 in
 {
   programs.ghostty = {
@@ -20,4 +28,16 @@ in
       mouse-scroll-multiplier = 10;
     };
   };
+
+  # Install Ghostty through apt in ubuntu to avoid having to use nixgl.
+  home.activation.installGhosttyFromNativePackageManager = lib.mkIf useNativePackageManager (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      PATH="/usr/bin:/bin:$PATH"
+
+      if command -v apt-get >/dev/null 2>&1 && ! command -v ghostty >/dev/null 2>&1; then
+        run sudo apt-get update
+        run sudo apt-get install -y ghostty
+      fi
+    ''
+  );
 }
