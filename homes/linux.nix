@@ -7,6 +7,7 @@
 
 {
   imports = [
+    ./tools/browser.nix
     ./tools/emacs.nix
     ./tools/catppuccin.nix
     ./tools/flameshot.nix
@@ -30,10 +31,5 @@
     packages = import nixgl { inherit pkgs; };
     defaultWrapper = "mesa";
     installScripts = [ "mesa" ];
-  };
-
-  programs.chromium = {
-    enable = true;
-    package = pkgs.brave;
   };
 }

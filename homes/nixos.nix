@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./tools/browser.nix
     ./tools/emacs.nix
     ./tools/catppuccin.nix
     ./tools/flameshot.nix
@@ -36,10 +37,5 @@
         };
       };
     };
-  };
-
-  programs.chromium = {
-    enable = true;
-    package = pkgs.brave;
   };
 }

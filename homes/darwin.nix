@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./tools/browser.nix
     ./tools/emacs.nix
     ./tools/catppuccin.nix
     ./tools/flameshot.nix
