@@ -15,8 +15,6 @@
     ./tools/neovim.nix
     ./tools/shell.nix
     ./tools/vscode.nix
-
-    ./activations/vscode-change-sandbox-permissions.nix
   ];
 
   home.stateVersion = "25.05";
