@@ -17,19 +17,9 @@ I use Nix to replicate my environment on multiple OS.
     In macos, remember to give "Full Disk Access" to nix.
 
     #+begin_src bash
+    nix run .#bootstrap-linux-native # Only for linux with apt
     nix run .#build-config "config name"
     #+end_src
-
-    This will transparently install the tools required to apply the config on the current OS.
-
-    On linux, this will install:
-
-    - [[https://github.com/nix-community/home-manager][Home Manager]]
-
-    On macos, this will install:
-
-    - [[https://github.com/LnL7/nix-darwin][nix-darwin]]
-    - [[https://github.com/nix-community/home-manager][Home Manager]]
 
 That's it. When applying a configuration, take into account that some changes will only
 take effect after you log out and log back in. For example:

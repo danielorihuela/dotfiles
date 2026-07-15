@@ -139,6 +139,16 @@
           pkgs = nixpkgs.legacyPackages.${system};
         in
         {
+          bootstrap-linux = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "bootstrap-linux";
+                text = builtins.readFile ./helpers/bootstrap/linux.sh;
+              }
+            }/bin/bootstrap-linux";
+          };
+
           build-config = {
             type = "app";
             program = "${
