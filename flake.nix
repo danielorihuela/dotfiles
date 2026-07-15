@@ -61,6 +61,7 @@
         base = {
           username = "dani";
           homeFilePath = ./homes/linux.nix;
+          desktop = "gnome";
         };
       };
 
@@ -94,6 +95,7 @@
           modules = [ data.homeFilePath ] ++ sharedModules;
           extraSpecialArgs = {
             username = data.username;
+            desktop = data.desktop;
           };
         }
       ) nonNixosUsers;

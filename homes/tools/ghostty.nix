@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  desktop,
   ...
 }:
 let
@@ -9,6 +10,7 @@ let
   isNixOS = config ? nixosVersion;
   usePackage = isLinux && isNixOS;
   useNativePackageManager = isLinux && !isNixOS;
+  isGnome = desktop == "gnome";
 in
 {
   programs.ghostty = {
@@ -40,4 +42,18 @@ in
       fi
     ''
   );
+
+  dconf.settings = lib.mkIf isGnome {
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      custom-keybindings = [
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ghostty/"
+      ];
+    };
+
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/ghostty" = {
+      name = "Ghostty";
+      command = "ghostty";
+      binding = "<Super>t";
+    };
+  };
 }
