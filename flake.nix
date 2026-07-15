@@ -175,6 +175,22 @@
             }/bin/build-config";
           };
 
+          update = {
+            type = "app";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "update";
+                text = ''
+                  nix flake update
+
+                  if command -v apt-get >/dev/null 2>&1; then
+                    sudo apt-get update && sudo apt-get upgrade
+                  fi
+                '';
+              }
+            }/bin/update";
+          };
+
           uninstall = {
             type = "app";
             program = "${
