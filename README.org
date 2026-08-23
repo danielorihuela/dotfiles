@@ -17,7 +17,7 @@ I use Nix to replicate my environment on multiple OS.
     In macos, remember to give "Full Disk Access" to nix.
 
     #+begin_src bash
-    nix run .#bootstrap-linux-native # Only for linux with apt
+    nix run .#bootstrap-linux # Only for linux with apt
     nix run .#build-config "config name"
     #+end_src
 

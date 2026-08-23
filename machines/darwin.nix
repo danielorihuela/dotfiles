@@ -26,6 +26,7 @@
       "cryptomator"
       "fuse-t"
       "ghostty"
+      "brave-browser"
     ];
   };
 }
