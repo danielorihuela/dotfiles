@@ -27,6 +27,7 @@ in
       font-size = 16;
       command = "zsh";
       mouse-scroll-multiplier = 10;
+      shell-integration-features = "ssh-env,ssh-terminfo";
     };
   };
 
