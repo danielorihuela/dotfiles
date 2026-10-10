@@ -60,7 +60,7 @@
       nonNixosUsers = {
         base = {
           username = "dani";
-          homeFilePath = ./homes/linux.nix;
+          homeFilePath = ./homes/non-nixos.nix;
           desktop = "gnome";
         };
       };
@@ -68,7 +68,7 @@
       darwinUsers = {
         base = {
           username = "dani";
-          homeFilePath = ./homes/darwin.nix;
+          homeFilePath = ./homes/non-nixos.nix;
           machineFilePath = ./machines/darwin.nix;
         };
         nr = {
