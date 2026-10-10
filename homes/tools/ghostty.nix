@@ -6,7 +6,7 @@
   ...
 }:
 let
-  isLinux = pkgs.stdenv.isLinux;
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
   isNixOS = config ? nixosVersion;
   usePackage = isLinux && isNixOS;
   isGnome = desktop == "gnome";
