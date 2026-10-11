@@ -1,12 +1,12 @@
 {
   lib,
   pkgs,
-  config,
+  osConfig,
   ...
 }:
 let
   isLinux = pkgs.stdenv.hostPlatform.isLinux;
-  isNixOS = config ? nixosVersion;
+  isNixOS = osConfig != null;
 
   commonUserSettings = {
     "files.insertFinalNewline" = true;

@@ -122,6 +122,9 @@
             home-manager.users.dani = {
               imports = [ ./homes/nixos.nix ] ++ sharedModules;
             };
+            home-manager.extraSpecialArgs = {
+              desktop = "plasma";
+            };
           }
         ];
       };

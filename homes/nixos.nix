@@ -4,12 +4,12 @@
   imports = [
     ./tools/emacs.nix
     ./tools/catppuccin.nix
-    ./tools/flameshot.nix
     ./tools/ghostty.nix
     ./tools/git.nix
     ./tools/neovim.nix
     ./tools/shell.nix
     ./tools/vscode.nix
+    ./tools/wayscriber.nix
   ];
 
   home.stateVersion = "25.05";
@@ -26,15 +26,6 @@
     workspace = {
       wallpaper = "/etc/.background/.background-image";
       iconTheme = "Papirus-Dark";
-    };
-
-    hotkeys = {
-      commands = {
-        "flameshot" = {
-          command = "flameshot gui";
-          key = "Meta+S";
-        };
-      };
     };
   };
 }

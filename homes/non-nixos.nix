@@ -8,12 +8,12 @@
   imports = [
     ./tools/emacs.nix
     ./tools/catppuccin.nix
-    ./tools/flameshot.nix
     ./tools/ghostty.nix
     ./tools/git.nix
     ./tools/neovim.nix
     ./tools/shell.nix
     ./tools/vscode.nix
+    ./tools/wayscriber.nix
   ];
 
   home.stateVersion = "25.05";
