@@ -139,6 +139,7 @@
 
 (use-package evil
   :init
+  (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-c-i-jump nil)
   :config (evil-mode 1))
@@ -146,7 +147,6 @@
 (use-package evil-collection
   :after evil
   :config
-  (setq evil-want-integration t)
   (evil-collection-init)
   :custom
   (evil-collection-setup-minibuffer t))
