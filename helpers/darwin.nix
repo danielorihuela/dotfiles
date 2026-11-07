@@ -30,6 +30,7 @@
             users.${username}.imports = [ homeFilePath ] ++ homeManagerModules;
             extraSpecialArgs = {
               inherit username;
+              isLinux = false;
               desktop = null;
             };
             backupFileExtension = "backup";

@@ -1,6 +1,8 @@
 {
   pkgs,
+  lib,
   username,
+  isLinux,
   ...
 }:
 
@@ -13,6 +15,8 @@
     ./tools/neovim.nix
     ./tools/shell.nix
     ./tools/vscode.nix
+  ]
+  ++ lib.optionals isLinux [
     ./tools/wayscriber.nix
   ];
 
@@ -20,5 +24,5 @@
   programs.home-manager.enable = true;
 
   home.username = username;
-  home.homeDirectory = "/home/${username}";
+  home.homeDirectory = if isLinux then "/home/${username}" else "/Users/${username}";
 }

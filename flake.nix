@@ -124,6 +124,7 @@
             };
             home-manager.extraSpecialArgs = {
               desktop = "plasma";
+              isLinux = true;
             };
           }
         ];
